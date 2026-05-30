@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" role="img" aria-labelledby="title desc">
+  <title id="title">AI chat assistant preview</title>
+  <desc id="desc">Dark chat interface with vector search nodes and neon green highlights.</desc>
+  <rect width="720" height="420" fill="#030712"/>
+  <defs>
+    <linearGradient id="a" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#00ff88"/>
+      <stop offset="1" stop-color="#00d4ff"/>
+    </linearGradient>
+  </defs>
+  <circle cx="574" cy="82" r="180" fill="#00ff88" opacity=".08"/>
+  <rect x="64" y="56" width="396" height="308" rx="14" fill="#0a0f1e" stroke="#1a2744"/>
+  <rect x="96" y="96" width="210" height="34" rx="17" fill="#13213a"/>
+  <rect x="96" y="160" width="292" height="42" rx="21" fill="#0f1a2f"/>
+  <rect x="174" y="236" width="236" height="42" rx="21" fill="#003b28" stroke="#00ff88" opacity=".9"/>
+  <rect x="96" y="310" width="188" height="18" rx="9" fill="#00d4ff" opacity=".35"/>
+  <g fill="none" stroke="url(#a)" stroke-width="2">
+    <path d="M524 122 600 164 586 248 506 278 438 220 452 142Z"/>
+    <path d="M452 142 586 248M600 164 506 278M524 122 438 220"/>
+  </g>
+  <g fill="#00ff88">
+    <circle cx="524" cy="122" r="10"/>
+    <circle cx="600" cy="164" r="8"/>
+    <circle cx="586" cy="248" r="10"/>
+    <circle cx="506" cy="278" r="8"/>
+    <circle cx="438" cy="220" r="9"/>
+    <circle cx="452" cy="142" r="7"/>
+  </g>
+</svg>

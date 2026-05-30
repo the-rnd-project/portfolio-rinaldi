@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 640" role="img" aria-labelledby="title desc">
+  <title id="title">Profile photo placeholder</title>
+  <desc id="desc">Abstract portrait placeholder for a personal portfolio photo.</desc>
+  <rect width="520" height="640" fill="#030712"/>
+  <defs>
+    <linearGradient id="frame" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#00ff88"/>
+      <stop offset=".55" stop-color="#00d4ff"/>
+      <stop offset="1" stop-color="#b24bff"/>
+    </linearGradient>
+    <radialGradient id="glow" cx=".5" cy=".28" r=".68">
+      <stop offset="0" stop-color="#00d4ff" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#00d4ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="520" height="640" fill="url(#glow)"/>
+  <g stroke="#1a2744" stroke-width="1" opacity=".75">
+    <path d="M0 80h520M0 160h520M0 240h520M0 320h520M0 400h520M0 480h520M0 560h520"/>
+    <path d="M65 0v640M130 0v640M195 0v640M260 0v640M325 0v640M390 0v640M455 0v640"/>
+  </g>
+  <rect x="70" y="56" width="380" height="528" rx="28" fill="#0a0f1e" stroke="url(#frame)" stroke-width="3"/>
+  <circle cx="260" cy="236" r="94" fill="#111a2d" stroke="#00d4ff" stroke-width="3"/>
+  <path d="M120 548c28-118 94-178 140-178s112 60 140 178" fill="#111a2d" stroke="#00ff88" stroke-width="3"/>
+  <path d="M178 428c38 32 126 32 164 0" fill="none" stroke="#b24bff" stroke-width="3" stroke-linecap="round" opacity=".75"/>
+  <circle cx="184" cy="204" r="8" fill="#00ff88"/>
+  <circle cx="336" cy="204" r="8" fill="#00ff88"/>
+  <rect x="142" y="92" width="122" height="12" rx="6" fill="#00ff88" opacity=".9"/>
+  <rect x="142" y="118" width="184" height="8" rx="4" fill="#00d4ff" opacity=".45"/>
+  <rect x="176" y="514" width="168" height="10" rx="5" fill="#00ff88" opacity=".65"/>
+  <rect x="204" y="540" width="112" height="8" rx="4" fill="#00d4ff" opacity=".55"/>
+</svg>

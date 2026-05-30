@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" role="img" aria-labelledby="title desc">
+  <title id="title">Time series forecasting preview</title>
+  <desc id="desc">Forecasting chart with confidence interval and model pipeline blocks.</desc>
+  <rect width="720" height="420" fill="#030712"/>
+  <defs>
+    <linearGradient id="f" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#b24bff"/>
+      <stop offset="1" stop-color="#00ff88"/>
+    </linearGradient>
+  </defs>
+  <rect x="66" y="64" width="588" height="292" rx="14" fill="#0a0f1e" stroke="#1a2744"/>
+  <g stroke="#1a2744">
+    <path d="M108 116h492M108 168h492M108 220h492M108 272h492"/>
+    <path d="M166 96v224M246 96v224M326 96v224M406 96v224M486 96v224M566 96v224"/>
+  </g>
+  <path d="M112 256C176 210 204 246 250 202S332 128 396 174s102 4 198-70v154c-88 54-140 86-202 36s-90 8-144 12-86-14-136 24Z" fill="#b24bff" opacity=".16"/>
+  <path d="M112 256C176 210 204 246 250 202S332 128 396 174s102 4 198-70" fill="none" stroke="url(#f)" stroke-width="5" stroke-linecap="round"/>
+  <path d="M396 174c58 44 110 12 198-70" fill="none" stroke="#00ff88" stroke-width="5" stroke-dasharray="12 12" stroke-linecap="round"/>
+  <g fill="#00ff88">
+    <circle cx="250" cy="202" r="7"/>
+    <circle cx="396" cy="174" r="7"/>
+    <circle cx="594" cy="104" r="7"/>
+  </g>
+</svg>

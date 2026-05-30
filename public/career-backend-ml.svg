@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">Backend and machine learning systems</title>
+  <desc id="desc">Abstract server racks and model pipeline blocks on a dark background.</desc>
+  <rect width="640" height="360" fill="#030712"/>
+  <defs>
+    <linearGradient id="b" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#00d4ff"/>
+      <stop offset="1" stop-color="#b24bff"/>
+    </linearGradient>
+  </defs>
+  <circle cx="520" cy="84" r="150" fill="#00d4ff" opacity=".07"/>
+  <g stroke="#1a2744" fill="#0a0f1e">
+    <rect x="56" y="72" width="164" height="216" rx="8"/>
+    <rect x="250" y="92" width="136" height="176" rx="8"/>
+    <rect x="416" y="72" width="168" height="216" rx="8"/>
+  </g>
+  <g fill="none" stroke="url(#b)" stroke-width="3" stroke-linecap="round">
+    <path d="M220 132h30M386 132h30M220 180h30M386 180h30M220 228h30M386 228h30"/>
+  </g>
+  <g fill="#00d4ff">
+    <rect x="82" y="104" width="112" height="10" rx="5"/>
+    <rect x="82" y="148" width="92" height="10" rx="5" opacity=".7"/>
+    <rect x="82" y="192" width="120" height="10" rx="5" opacity=".45"/>
+    <rect x="82" y="236" width="70" height="10" rx="5" opacity=".6"/>
+  </g>
+  <g fill="#b24bff">
+    <rect x="278" y="124" width="80" height="12" rx="6"/>
+    <rect x="278" y="172" width="54" height="12" rx="6" opacity=".7"/>
+    <rect x="278" y="220" width="94" height="12" rx="6" opacity=".5"/>
+  </g>
+  <g fill="#00ff88">
+    <circle cx="456" cy="116" r="9"/>
+    <circle cx="504" cy="148" r="9" opacity=".8"/>
+    <circle cx="536" cy="208" r="9" opacity=".65"/>
+    <circle cx="468" cy="242" r="9" opacity=".75"/>
+  </g>
+  <g stroke="#00ff88" stroke-width="2" opacity=".7">
+    <path d="M456 116 504 148 536 208 468 242 456 116" fill="none"/>
+  </g>
+</svg>

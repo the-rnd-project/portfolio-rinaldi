@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">Computer science education</title>
+  <desc id="desc">Abstract coding notebook and graduation cap with neon accents.</desc>
+  <rect width="640" height="360" fill="#030712"/>
+  <defs>
+    <linearGradient id="e" x1="0" x2="1" y1="1" y2="0">
+      <stop offset="0" stop-color="#b24bff"/>
+      <stop offset="1" stop-color="#00ff88"/>
+    </linearGradient>
+  </defs>
+  <rect x="88" y="78" width="300" height="208" rx="10" fill="#0a0f1e" stroke="#1a2744"/>
+  <rect x="116" y="112" width="104" height="10" rx="5" fill="#b24bff"/>
+  <rect x="116" y="148" width="214" height="8" rx="4" fill="#00d4ff" opacity=".65"/>
+  <rect x="116" y="174" width="168" height="8" rx="4" fill="#00ff88" opacity=".55"/>
+  <rect x="116" y="200" width="232" height="8" rx="4" fill="#00d4ff" opacity=".45"/>
+  <rect x="116" y="226" width="138" height="8" rx="4" fill="#00ff88" opacity=".7"/>
+  <g transform="translate(368 88)">
+    <path d="M86 28 190 72 86 116-18 72 86 28Z" fill="url(#e)" opacity=".9"/>
+    <path d="M26 94v52c38 28 82 28 120 0V94" fill="#0a0f1e" stroke="#00ff88" stroke-width="3"/>
+    <path d="M190 72v72" stroke="#00d4ff" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="190" cy="156" r="8" fill="#00d4ff"/>
+  </g>
+  <circle cx="176" cy="256" r="88" fill="#b24bff" opacity=".08"/>
+</svg>

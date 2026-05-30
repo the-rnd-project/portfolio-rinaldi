@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" role="img" aria-labelledby="title desc">
+  <title id="title">Smart analytics dashboard preview</title>
+  <desc id="desc">Analytics dashboard with metric cards, charts, and anomaly markers.</desc>
+  <rect width="720" height="420" fill="#030712"/>
+  <defs>
+    <linearGradient id="d" x1="0" x2="1" y1="1" y2="0">
+      <stop offset="0" stop-color="#b24bff"/>
+      <stop offset="1" stop-color="#00d4ff"/>
+    </linearGradient>
+  </defs>
+  <rect x="56" y="54" width="608" height="312" rx="14" fill="#0a0f1e" stroke="#1a2744"/>
+  <rect x="88" y="86" width="128" height="66" rx="8" fill="#111a2d" stroke="#1a2744"/>
+  <rect x="240" y="86" width="128" height="66" rx="8" fill="#111a2d" stroke="#1a2744"/>
+  <rect x="392" y="86" width="128" height="66" rx="8" fill="#111a2d" stroke="#1a2744"/>
+  <rect x="544" y="86" width="88" height="66" rx="8" fill="#111a2d" stroke="#1a2744"/>
+  <rect x="88" y="184" width="332" height="132" rx="8" fill="#06111f" stroke="#1a2744"/>
+  <rect x="452" y="184" width="180" height="132" rx="8" fill="#06111f" stroke="#1a2744"/>
+  <path d="M112 282 166 244 218 258 270 214 330 236 392 202" fill="none" stroke="url(#d)" stroke-width="4" stroke-linecap="round"/>
+  <g fill="#00d4ff">
+    <rect x="112" y="110" width="70" height="9" rx="4"/>
+    <rect x="264" y="110" width="82" height="9" rx="4" opacity=".75"/>
+    <rect x="416" y="110" width="64" height="9" rx="4" opacity=".6"/>
+    <rect x="566" y="110" width="42" height="9" rx="4" opacity=".8"/>
+  </g>
+  <g fill="#b24bff">
+    <rect x="484" y="274" width="24" height="26" rx="4"/>
+    <rect x="520" y="238" width="24" height="62" rx="4"/>
+    <rect x="556" y="210" width="24" height="90" rx="4"/>
+    <rect x="592" y="252" width="24" height="48" rx="4"/>
+  </g>
+</svg>
