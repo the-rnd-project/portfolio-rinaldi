@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#030712"/>
+  <path d="M12 12h40v40H12z" fill="none" stroke="#1a2744" stroke-width="2"/>
+  <path d="M18 18h28" stroke="#00ff88" stroke-width="2" stroke-linecap="round"/>
+  <path d="M18 46h28" stroke="#00d4ff" stroke-width="2" stroke-linecap="round"/>
+  <text x="32" y="39" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="800" letter-spacing="1" fill="#f8fafc">RUS</text>
+  <circle cx="50" cy="14" r="3" fill="#00ff88"/>
+  <circle cx="14" cy="50" r="3" fill="#00d4ff"/>
+</svg>

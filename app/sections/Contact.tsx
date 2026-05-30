@@ -1,18 +1,18 @@
 "use client";
 import { useRef, useState } from "react";
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
-import { Mail, MapPin, Phone, Send, Github, Linkedin, Twitter } from "lucide-react";
+import { BookOpen, Mail, MapPin, Send, Github, Linkedin } from "lucide-react";
 
 const contactInfo = [
   { icon: Mail, label: "Email", value: "rinaldiudra@gmail.com", href: "mailto:rinaldiudra@gmail.com", color: "#00ff88" },
-  { icon: Phone, label: "Phone", value: "+62 812-3456-7890", href: "tel:+6281234567890", color: "#00d4ff" },
-  { icon: MapPin, label: "Location", value: "Indonesia", href: "#", color: "#b24bff" },
+  { icon: Linkedin, label: "LinkedIn", value: "rinaldi-udra-suhanda", href: "https://www.linkedin.com/in/rinaldi-udra-suhanda/", color: "#00d4ff" },
+  { icon: MapPin, label: "Location", value: "Banda Aceh, Indonesia", href: "#", color: "#b24bff" },
 ];
 
 const socials = [
-  { icon: Github, href: "https://github.com", label: "GitHub" },
-  { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-  { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
+  { icon: Github, href: "https://github.com/rinaldiudrasuhanda", label: "GitHub" },
+  { icon: Linkedin, href: "https://www.linkedin.com/in/rinaldi-udra-suhanda/", label: "LinkedIn" },
+  { icon: BookOpen, href: "https://rinaldiudrasuhanda.medium.com/", label: "Medium" },
 ];
 
 // Animated input field
@@ -125,7 +125,7 @@ export default function Contact() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            Tertarik berkolaborasi, punya proyek menarik, atau sekadar ingin ngobrol soal AI?
+            Tertarik berkolaborasi untuk software engineering, aplikasi web, RESTful API, atau solusi AI yang user-centered?
             Inbox saya selalu terbuka.
           </motion.p>
         </motion.div>

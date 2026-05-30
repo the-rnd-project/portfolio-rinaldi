@@ -7,23 +7,23 @@ import {
   useSpring,
   useInView,
 } from "framer-motion";
-import { Brain, Code2, Database, Cpu } from "lucide-react";
+import { BookOpen, Code2, Database, Cpu } from "lucide-react";
 import dynamic from "next/dynamic";
 
 const FloatingSphere = dynamic(() => import("../components/FloatingSphere"), { ssr: false });
 
 const stats = [
-  { value: "3+", label: "Years Experience" },
-  { value: "20+", label: "Projects Built" },
-  { value: "10+", label: "AI Models Deployed" },
-  { value: "5+", label: "Open Source" },
+  { value: "4+", label: "Professional Years" },
+  { value: "6", label: "Teaching Roles" },
+  { value: "3", label: "Registered Apps" },
+  { value: "2026", label: "AI Master's Track" },
 ];
 
 const highlights = [
-  { icon: Brain, title: "AI/ML Engineering", desc: "Deep Learning, NLP, Computer Vision, LLMs", color: "#00ff88" },
-  { icon: Code2, title: "Full Stack Dev", desc: "React, Next.js, Node.js, Python FastAPI", color: "#00d4ff" },
-  { icon: Database, title: "Data Engineering", desc: "SQL, NoSQL, Vector DBs, ETL Pipelines", color: "#b24bff" },
-  { icon: Cpu, title: "MLOps & Cloud", desc: "Docker, Kubernetes, AWS, GCP, CI/CD", color: "#00ff88" },
+  { icon: Code2, title: "Python & RESTful API", desc: "Flask, web services, unit testing", color: "#00ff88" },
+  { icon: Cpu, title: "Web & Mobile Apps", desc: "Laravel, Flask, Flutter, user flows", color: "#00d4ff" },
+  { icon: Database, title: "Software Design", desc: "Scrum, GDD, UML, requirements", color: "#b24bff" },
+  { icon: BookOpen, title: "AI & UX Foundation", desc: "Applied ML, usability testing, user manuals", color: "#00ff88" },
 ];
 
 const itemVar = {
@@ -118,8 +118,8 @@ export default function About() {
           {/* Left: Text */}
           <motion.div className="space-y-6" style={{ y: yLeft }}>
             {[
-              <>Halo! Saya seorang <span className="text-[#00ff88] font-medium">Software Engineer</span> dengan keahlian mendalam di bidang <span className="text-[#00d4ff] font-medium">Kecerdasan Buatan</span>. Saya memiliki hasrat membangun sistem yang tidak hanya fungsional, tetapi cerdas dan scalable.</>,
-              <>Perjalanan saya dimulai dari coding sederhana hingga merancang arsitektur AI yang kompleks. Saya percaya bahwa teknologi terbaik adalah yang tidak terlihat — ia bekerja di balik layar, memecahkan masalah nyata.</>,
+              <>Halo! Saya <span className="text-[#00ff88] font-medium">Rinaldi Udra Suhanda</span>, lulusan Informatika dan mahasiswa Magister <span className="text-[#00d4ff] font-medium">Kecerdasan Buatan</span> di Universitas Syiah Kuala. Fokus saya ada di software engineering, applied machine learning, dan solusi digital yang scalable.</>,
+              <>Pengalaman saya mencakup pengembangan RESTful API dengan Flask, aplikasi web untuk pemeliharaan fasilitas, layanan inspeksi halal, sertifikasi profesional, sistem informasi pariwisata berbasis Laravel, serta pengujian dan usability testing bersama pengguna.</>,
             ].map((text, i) => (
               <motion.p
                 key={i}
@@ -157,8 +157,8 @@ export default function About() {
                 {[
                   ["name", "\"Rinaldi Udra Suhanda\""],
                   ["role", "\"Software Engineer\""],
-                  ["focus", "[\"AI\", \"ML\", \"Web\"]"],
-                  ["location", "\"Indonesia\""],
+                  ["focus", "[\"AI\", \"Software Engineering\", \"Web\"]"],
+                  ["location", "\"Banda Aceh, Indonesia\""],
                   ["available", "true"],
                 ].map(([k, v]) => (
                   <div key={k} className="pl-4">
@@ -226,7 +226,7 @@ export default function About() {
                   <div className="font-mono text-xs tracking-widest text-[#00ff88]">PROFILE_PHOTO</div>
                   <div className="mt-2 font-display text-lg font-semibold text-white">Rinaldi Udra Suhanda</div>
                   <p className="mt-2 text-sm leading-relaxed text-gray-500">
-                    Software Engineer dengan fokus pada AI, machine learning, dan pengalaman web yang scalable.
+                    Master&apos;s Degree Candidate in Artificial Intelligence dengan pengalaman praktis membangun software, RESTful API, aplikasi web, dan dokumentasi pengguna.
                   </p>
                 </div>
               </div>

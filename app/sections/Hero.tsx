@@ -7,11 +7,12 @@ import dynamic from "next/dynamic";
 const ThreeScene = dynamic(() => import("../components/ThreeScene"), { ssr: false });
 
 const roles = [
+  "AI Master's Candidate",
   "Software Engineer",
-  "AI/ML Engineer",
-  "Full Stack Developer",
-  "Deep Learning Enthusiast",
-  "Open Source Contributor",
+  "Programmer",
+  "Python Developer",
+  "Web Developer",
+  "Applied ML Enthusiast",
 ];
 
 function NeuralBackground() {
@@ -236,9 +237,9 @@ export default function Hero() {
 
           {/* Description */}
           <motion.p variants={itemVar} className="text-gray-400 text-base md:text-lg max-w-md mb-9 leading-relaxed">
-            Membangun solusi cerdas di persimpangan{" "}
-            <span className="text-[#00d4ff]">rekayasa perangkat lunak</span> dan{" "}
-            <span className="text-[#00ff88]">kecerdasan buatan</span>. Mengubah data menjadi wawasan, ide menjadi realitas.
+            Lulusan Informatika dan mahasiswa Magister{" "}
+            <span className="text-[#00d4ff]">Kecerdasan Buatan</span> yang berfokus membangun{" "}
+            <span className="text-[#00ff88]">perangkat lunak, aplikasi web, dan RESTful API</span>, serta solusi digital yang berpusat pada pengguna.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -262,9 +263,9 @@ export default function Hero() {
           {/* Social */}
           <motion.div variants={itemVar} className="flex items-center gap-5">
             {[
-              { icon: Github, href: "https://github.com", label: "GitHub" },
-              { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-              { icon: Mail, href: "mailto:you@email.com", label: "Email" },
+              { icon: Github, href: "https://github.com/rinaldiudra", label: "GitHub" },
+              { icon: Linkedin, href: "https://www.linkedin.com/in/rinaldi-udra-suhanda/", label: "LinkedIn" },
+              { icon: Mail, href: "mailto:rinaldiudra@gmail.com", label: "Email" },
             ].map(({ icon: Icon, href, label }) => (
               <motion.a key={label} href={href} target="_blank" rel="noopener noreferrer"
                 className="group flex flex-col items-center gap-1 text-gray-500 hover:text-[#00ff88] transition-colors"

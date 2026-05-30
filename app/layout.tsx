@@ -4,8 +4,11 @@ import SmoothScroll from "./components/SmoothScroll";
 import MagneticCursor from "./components/MagneticCursor";
 
 export const metadata: Metadata = {
-  title: "Rinaldi Udra Suhanda | Software Engineer & AI Specialist",
-  description: "Software Engineer specializing in Artificial Intelligence, Machine Learning, and Full-Stack Development",
+  title: "Rinaldi Udra Suhanda | Software Engineer & AI Master's Candidate",
+  description: "Informatics graduate and Artificial Intelligence master's candidate with experience in software engineering, Python, Flask, RESTful APIs, Laravel, Flutter, and user-centered digital solutions.",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

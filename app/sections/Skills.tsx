@@ -4,54 +4,54 @@ import { motion, useScroll, useTransform, useSpring, useInView } from "framer-mo
 
 const skillCategories = [
   {
-    title: "AI & Machine Learning",
+    title: "Programming & API",
     color: "#00ff88",
     glow: "rgba(0,255,136,0.15)",
-    icon: "🧠",
+    icon: "PY",
     skills: [
-      { name: "Python / PyTorch", level: 92 },
-      { name: "TensorFlow / Keras", level: 85 },
-      { name: "Scikit-learn / XGBoost", level: 90 },
-      { name: "HuggingFace / LLMs", level: 88 },
-      { name: "Computer Vision (OpenCV)", level: 80 },
-      { name: "NLP / Transformers", level: 85 },
+      { name: "Python", level: 92 },
+      { name: "Flask / RESTful API", level: 90 },
+      { name: "Unit Testing", level: 84 },
+      { name: "Google Cloud Platform", level: 78 },
+      { name: "Laravel / PHP", level: 80 },
+      { name: "MySQL", level: 84 },
     ],
   },
   {
     title: "Web Development",
     color: "#00d4ff",
     glow: "rgba(0,212,255,0.15)",
-    icon: "⚡",
+    icon: "WEB",
     skills: [
-      { name: "React / Next.js", level: 92 },
-      { name: "TypeScript / JavaScript", level: 90 },
-      { name: "Node.js / Express", level: 85 },
-      { name: "Python / FastAPI", level: 88 },
-      { name: "REST API / GraphQL", level: 87 },
-      { name: "Tailwind CSS", level: 90 },
+      { name: "Web App Development", level: 88 },
+      { name: "Flutter Mobile Apps", level: 80 },
+      { name: "UI Design", level: 84 },
+      { name: "Usability Testing", level: 86 },
+      { name: "User Manual Docs", level: 88 },
+      { name: "User-Centered Design", level: 86 },
     ],
   },
   {
-    title: "Data & Infrastructure",
+    title: "Software Engineering",
     color: "#b24bff",
     glow: "rgba(178,75,255,0.15)",
-    icon: "🔮",
+    icon: "SE",
     skills: [
-      { name: "PostgreSQL / MySQL", level: 85 },
-      { name: "MongoDB / Redis", level: 82 },
-      { name: "Docker / Kubernetes", level: 78 },
-      { name: "AWS / GCP / Azure", level: 80 },
-      { name: "MLflow / DVC", level: 75 },
-      { name: "Elasticsearch / Pinecone", level: 72 },
+      { name: "Agile Scrum", level: 88 },
+      { name: "Goal-Directed Design", level: 84 },
+      { name: "Requirement Analysis", level: 88 },
+      { name: "UML Diagrams", level: 86 },
+      { name: "Project Management with Trello", level: 84 },
+      { name: "Applied Machine Learning", level: 78 },
     ],
   },
 ];
 
 const techBadges = [
-  "Python", "TypeScript", "React", "Next.js", "PyTorch", "TensorFlow",
-  "FastAPI", "Node.js", "Docker", "PostgreSQL", "MongoDB", "Redis",
-  "AWS", "GCP", "Kubernetes", "Git", "Linux", "Jupyter",
-  "HuggingFace", "OpenAI API", "LangChain", "Pinecone",
+  "Python", "Flask", "RESTful API", "Flutter", "Laravel", "PHP",
+  "MySQL", "Google Cloud Platform", "Scrum", "Goal-Directed Design",
+  "UML", "Trello", "Unit Testing", "Usability Testing", "Web Apps",
+  "Applied ML", "UX Design", "User Manual",
 ];
 
 // 3D tilt card
@@ -199,7 +199,7 @@ export default function Skills() {
             >
               <TiltCard color={cat.color} glow={cat.glow}>
                 <div className="flex items-center gap-2 mb-6">
-                  <span className="text-xl">{cat.icon}</span>
+                  <span className="font-mono text-[10px] text-gray-500">{cat.icon}</span>
                   <h3 className="font-display font-semibold text-white text-sm">{cat.title}</h3>
                   <motion.div
                     className="ml-auto w-2 h-2 rounded-full"
