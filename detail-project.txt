@@ -1,0 +1,10 @@
+1. chemistry e-learning system - This project is an e-learning application to learn chemistry lessons based on a website. The application is built using the Laravel framework.
+2. Aceh tourism information system - Web-based tourism information system in Aceh using the Laravel framework. This system manages data on tourist destinations, tour guides, hotels, souvenirs, and culinary and travel services in Aceh.
+3. Building Facility Maintenance Apps - This project was built in two parts, namely web-based and mobile-based. Web-based applications are built using the Flask framework and mobile-based applications are built using the Flutter framework. This project implements Agile Software Development.
+4. LPH USK - Website to assist Lembaga Pemeriksa Halal Universitas Syiah Kuala (LPH USK) in the process of Halal Product Certification.
+5. LSP USK - Web-based application for professional certification services using the Flask framework.
+6. Medical Records App - Developed a mobile-based patient medical records application that streamlines the management of patient data, medical histories, diagnoses, prescriptions, and treatment records. The application provides secure, real-time access to healthcare information, improving efficiency and accuracy in clinical workflows.
+7. Sibale-Go - Official Geospatial Efficient Service-Based Information System of BPKHTL Region XVIII Banda Aceh
+8. MediRemind - A medication management application that enables users to schedule medication intake, receive reminders, monitor treatment progress, and maintain adherence to prescribed therapies.
+9. MyFBA - Developed an internal service platform for Forum Bangun Aceh (FBA) that supports member management, internal communication, information dissemination, and organizational administration through a centralized and user-friendly system.
+10. SIMASUR - A web-based application designed to manage incoming and outgoing correspondence, as well as digital document archives. The system streamlines document tracking, storage, and retrieval processes, improving administrative efficiency and record management.

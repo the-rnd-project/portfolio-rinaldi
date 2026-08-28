@@ -214,16 +214,25 @@ export default function About() {
               }}
             >
               <div className="absolute left-0 top-0 h-full w-0.5 bg-gradient-to-b from-[#00ff88] via-[#00d4ff] to-[#b24bff]" />
-              <div className="grid items-center gap-5 sm:grid-cols-[150px_1fr]">
-                <div className="relative aspect-[4/5] overflow-hidden border border-[#1a2744] bg-[#030712]">
+              <div className="grid items-center gap-6 sm:grid-cols-[170px_1fr]">
+                <div className="relative aspect-[4/5] overflow-hidden border border-[#2a3b61] bg-[#030712] shadow-2xl">
+                  <div
+                    className="absolute inset-0 pointer-events-none z-10"
+                    style={{
+                      background:
+                        "linear-gradient(180deg, transparent 52%, rgba(3,7,18,0.78) 100%), radial-gradient(circle at 35% 12%, rgba(0,255,136,0.16), transparent 38%)",
+                    }}
+                  />
+                  <div className="absolute left-3 top-3 z-20 h-5 w-5 border-l border-t border-[#00ff88]" />
+                  <div className="absolute bottom-3 right-3 z-20 h-5 w-5 border-b border-r border-[#00d4ff]" />
                   <img
-                    src="/profile-placeholder.svg"
-                    alt="Rinaldi Udra Suhanda profile placeholder"
-                    className="h-full w-full object-cover"
+                    src="/images/profil.png"
+                    alt="Rinaldi Udra Suhanda profile photo"
+                    className="h-full w-full object-cover object-center transition duration-500 group-hover:scale-[1.04]"
                   />
                 </div>
                 <div>
-                  <div className="font-mono text-xs tracking-widest text-[#00ff88]">PROFILE_PHOTO</div>
+                  <div className="font-mono text-xs tracking-widest text-[#00ff88]">PROFILE</div>
                   <div className="mt-2 font-display text-lg font-semibold text-white">Rinaldi Udra Suhanda</div>
                   <p className="mt-2 text-sm leading-relaxed text-gray-500">
                     Master&apos;s Degree Candidate in Artificial Intelligence dengan pengalaman praktis membangun software, RESTful API, aplikasi web, dan dokumentasi pengguna.

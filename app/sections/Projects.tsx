@@ -1,94 +1,142 @@
 "use client";
 import { useRef, useState } from "react";
 import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion";
-import { ExternalLink, Github } from "lucide-react";
 
-const projects = [
+type Project = {
+  id: string;
+  title: string;
+  category: string;
+  image: string;
+  secondaryImage?: string;
+  imageFit?: "cover" | "contain";
+  description: string;
+  tech: string[];
+  color: string;
+  glow: string;
+  featured?: boolean;
+};
+
+const projects: Project[] = [
   {
     id: "01",
-    title: "Building Facility Maintenance Web App",
-    category: "Facility Management",
-    image: "/project-dashboard.svg",
+    title: "Chemistry E-Learning System",
+    category: "Education / Web App",
+    image: "/images/1.png",
     description:
-      "Software berbasis web untuk pemeliharaan fasilitas gedung. Dibangun dengan Flask Python Framework setelah proses requirement analysis, UML, persona, storyboard, dan user interface design.",
-    tech: ["Python", "Flask", "RESTful API", "UML", "GCP"],
+      "A web-based e-learning application for learning chemistry lessons, built using the Laravel framework.",
+    tech: ["Laravel", "PHP", "E-Learning", "Web App"],
     color: "#00ff88",
     glow: "rgba(0,255,136,0.12)",
     featured: true,
-    github: "#",
-    live: "https://sinta.kemdiktisaintek.go.id/authors/profile/59434/?view=iprs",
   },
   {
     id: "02",
-    title: "Building Facility Maintenance Mobile App",
-    category: "Mobile Application",
-    image: "/project-ecommerce.svg",
+    title: "Aceh Tourism Information System",
+    category: "Tourism / Web App",
+    image: "/images/2.png",
     description:
-      "Aplikasi mobile untuk mendukung proses pemeliharaan fasilitas gedung. Dikembangkan menggunakan Flutter Framework dan menjadi bagian dari rangkaian solusi pemeliharaan fasilitas.",
-    tech: ["Flutter", "Mobile App", "UI Flow", "User Requirements", "Testing"],
+      "Web-based tourism information system for Aceh that manages tourist destinations, tour guides, hotels, souvenirs, culinary services, and travel services.",
+    tech: ["Laravel", "PHP", "Tourism", "Information System"],
     color: "#00d4ff",
     glow: "rgba(0,212,255,0.12)",
     featured: true,
-    github: "#",
-    live: "https://sinta.kemdiktisaintek.go.id/authors/profile/59434/?view=iprs",
   },
   {
     id: "03",
-    title: "Halal Inspection Services Platform",
-    category: "Web Application",
-    image: "/project-ai-chat.svg",
+    title: "Building Facility Maintenance Apps",
+    category: "Facility Management",
+    image: "/images/3-2.png",
+    secondaryImage: "/images/3-1.png",
     description:
-      "Software berbasis web untuk layanan inspeksi halal. Dibangun menggunakan Flask Python Framework dengan pendekatan Agile dan desain berbasis kebutuhan pengguna.",
-    tech: ["Python", "Flask", "Scrum", "User Manual", "Usability Testing"],
+      "A facility maintenance solution built in two parts: a web application using Flask and a mobile application using Flutter, developed with Agile Software Development.",
+    tech: ["Flask", "Flutter", "Agile", "Facility Management"],
     color: "#b24bff",
     glow: "rgba(178,75,255,0.12)",
     featured: true,
-    github: "#",
-    live: "https://rinaldiudrasuhanda.medium.com/apa-itu-open-api-1b2cd2adac20",
   },
   {
     id: "04",
-    title: "Professional Certification Services",
-    category: "Web Application",
-    image: "/project-sentiment.svg",
+    title: "LPH USK",
+    category: "Certification / Web App",
+    image: "/images/4.png",
     description:
-      "Software berbasis web untuk layanan sertifikasi profesional. Proyek mencakup analisis kebutuhan, desain UI, implementasi Flask, dan dokumentasi pengguna.",
-    tech: ["Python", "Flask", "Requirements", "UI Design", "Docs"],
+      "Website that assists Lembaga Pemeriksa Halal Universitas Syiah Kuala in the Halal Product Certification process.",
+    tech: ["Web App", "Certification", "Halal Service", "LPH USK"],
     color: "#00ff88",
     glow: "rgba(0,255,136,0.12)",
-    github: "#",
-    live: "https://rinaldiudrasuhanda.medium.com/apa-itu-swagger-a9c8157ed725",
   },
   {
     id: "05",
-    title: "Tourist Destination Information System",
-    category: "Tourism / Web App",
-    image: "/project-forecasting.svg",
+    title: "LSP USK",
+    category: "Certification / Web App",
+    image: "/images/5.png",
     description:
-      "Sistem informasi destinasi wisata berbasis web untuk Dinas Kebudayaan dan Pariwisata Aceh. Dibangun dengan Laravel dan MySQL setelah analisis kebutuhan, desain proses bisnis, dan UI.",
-    tech: ["Laravel", "PHP", "MySQL", "Scrum", "User Testing"],
+      "Web-based application for professional certification services using the Flask framework.",
+    tech: ["Flask", "Python", "Certification", "Web App"],
     color: "#00d4ff",
     glow: "rgba(0,212,255,0.12)",
-    github: "#",
-    live: "https://rinaldiudrasuhanda.medium.com/dokumentasi-api-menggunakan-swagger-7e02078790be",
   },
   {
     id: "06",
-    title: "RESTful Web Service & Testing",
-    category: "Backend / API",
-    image: "/project-vision.svg",
+    title: "Medical Records App",
+    category: "Healthcare / Mobile App",
+    image: "/images/6.png",
+    imageFit: "contain",
     description:
-      "Web service berbasis RESTful API menggunakan Flask Python Framework. Proses pengembangan dilengkapi pengujian dengan Python Unit Test Framework.",
-    tech: ["RESTful API", "Python", "Flask", "Unit Test", "GCP"],
+      "Mobile-based patient medical records application for managing patient data, medical histories, diagnoses, prescriptions, and treatment records.",
+    tech: ["Mobile App", "Healthcare", "Medical Records", "Patient Data"],
     color: "#b24bff",
     glow: "rgba(178,75,255,0.12)",
-    github: "#",
-    live: "https://prezi.com/p/akk5heviyxgz/dml/",
+  },
+  {
+    id: "07",
+    title: "Sibale-Go",
+    category: "Geospatial Service",
+    image: "/images/7.png",
+    description:
+      "Official Geospatial Efficient Service-Based Information System of BPKHTL Region XVIII Banda Aceh.",
+    tech: ["Geospatial", "Information System", "Service Platform", "BPKHTL"],
+    color: "#00ff88",
+    glow: "rgba(0,255,136,0.12)",
+  },
+  {
+    id: "08",
+    title: "MediRemind",
+    category: "Healthcare / Mobile App",
+    image: "/images/8-1.png",
+    secondaryImage: "/images/8-2.png",
+    description:
+      "Medication management application that enables users to schedule medication intake, receive reminders, monitor treatment progress, and maintain therapy adherence.",
+    tech: ["Mobile App", "Medication Reminder", "Healthcare", "Progress Tracking"],
+    color: "#00d4ff",
+    glow: "rgba(0,212,255,0.12)",
+  },
+  {
+    id: "09",
+    title: "MyFBA",
+    category: "Internal Service Platform",
+    image: "/images/9.png",
+    description:
+      "Internal service platform for Forum Bangun Aceh that supports member management, internal communication, information dissemination, and organizational administration.",
+    tech: ["Service Platform", "Member Management", "Communication", "Administration"],
+    color: "#b24bff",
+    glow: "rgba(178,75,255,0.12)",
+  },
+  {
+    id: "10",
+    title: "SIMASUR",
+    category: "Document Management",
+    image: "/images/10.png",
+    description:
+      "Web-based application for managing incoming and outgoing correspondence and digital document archives, improving document tracking, storage, and retrieval.",
+    tech: ["Web App", "Correspondence", "Digital Archive", "Document Tracking"],
+    color: "#00ff88",
+    glow: "rgba(0,255,136,0.12)",
   },
 ];
 
 // Magnetic hover card
-function ProjectCard({ project, index }: { project: typeof projects[0]; index: number }) {
+function ProjectCard({ project, index }: { project: Project; index: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
@@ -136,26 +184,48 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
         transition={{ duration: 0.4 }}
       />
 
-      <div className="relative h-44 overflow-hidden border-b border-[#1a2744] bg-[#0a0f1e]" style={{ transform: "translateZ(8px)" }}>
-        <motion.img
-          src={project.image}
-          alt={`${project.title} preview`}
-          className="h-full w-full object-cover opacity-80 grayscale-[25%] transition duration-500 group-hover:opacity-100 group-hover:grayscale-0"
-          animate={{ scale: hovered ? 1.06 : 1 }}
-          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      <div className="relative h-56 overflow-hidden border-b border-[#1a2744] bg-[#07101f] p-3" style={{ transform: "translateZ(8px)" }}>
+        <div
+          className="absolute inset-0 opacity-70"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(255,255,255,0.06), transparent 34%), radial-gradient(circle at 20% 10%, rgba(0,212,255,0.12), transparent 32%)",
+          }}
         />
+
+        <div className="relative h-full overflow-hidden border border-[#25334f] bg-[#020712] shadow-2xl">
+          <div className="flex h-6 items-center gap-1.5 border-b border-[#25334f] bg-[#0c1324] px-3">
+            <span className="h-2 w-2 rounded-full bg-[#ff5f57]" />
+            <span className="h-2 w-2 rounded-full bg-[#ffbd2e]" />
+            <span className="h-2 w-2 rounded-full bg-[#28c840]" />
+            <span className="ml-2 h-1.5 flex-1 bg-[#18233b]" />
+          </div>
+          <motion.img
+            src={project.image}
+            alt={`${project.title} preview`}
+            className={`h-[calc(100%-1.5rem)] w-full ${project.imageFit === "contain" ? "object-contain p-3" : "object-cover"} opacity-90 transition duration-500 group-hover:opacity-100`}
+            animate={{ scale: hovered ? 1.035 : 1 }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          />
+        </div>
+
+        {project.secondaryImage && (
+          <motion.div
+            className="absolute bottom-4 right-5 h-36 w-20 overflow-hidden rounded-[18px] border border-[#34476d] bg-[#030712] p-1.5 shadow-2xl"
+            animate={{ y: hovered ? -4 : 0, scale: hovered ? 1.04 : 1 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <img
+              src={project.secondaryImage}
+              alt={`${project.title} mobile preview`}
+              className="h-full w-full rounded-[13px] object-cover"
+            />
+          </motion.div>
+        )}
         <div
           className="absolute inset-0 pointer-events-none"
-          style={{ background: `linear-gradient(180deg, transparent 35%, #030712 115%), radial-gradient(circle at 20% 0%, ${project.glow}, transparent 45%)` }}
+          style={{ background: `linear-gradient(180deg, transparent 55%, #030712 118%), radial-gradient(circle at 20% 0%, ${project.glow}, transparent 45%)` }}
         />
-        <motion.div
-          className="absolute bottom-3 left-4 font-mono text-[10px] tracking-widest"
-          style={{ color: project.color }}
-          animate={{ opacity: hovered ? 1 : 0.75 }}
-          transition={{ duration: 0.2 }}
-        >
-          PREVIEW_{project.id}
-        </motion.div>
       </div>
 
       <div className="p-6 flex flex-col flex-1" style={{ transform: "translateZ(10px)", position: "relative" }}>
@@ -168,31 +238,9 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
             >
               {project.category.toUpperCase()}
             </motion.span>
-            <div className="flex items-center gap-3">
-              <span className="font-display text-5xl font-bold opacity-10 group-hover:opacity-20 transition-opacity leading-none" style={{ color: project.color }}>
-                {project.id}
-              </span>
-              <h3 className="font-display font-bold text-white text-lg group-hover:text-[#00ff88] transition-colors leading-tight">
-                {project.title}
-              </h3>
-            </div>
-          </div>
-          <div className="flex gap-2 flex-shrink-0">
-            {[
-              { icon: Github, href: project.github },
-              { icon: ExternalLink, href: project.live },
-            ].map(({ icon: Icon, href }, i) => (
-              <motion.a
-                key={i}
-                href={href}
-                className="p-2 border border-[#1a2744] text-gray-600"
-                whileHover={{ color: project.color, borderColor: `${project.color}50`, scale: 1.1, rotate: i === 1 ? -10 : 0 }}
-                whileTap={{ scale: 0.9 }}
-                transition={{ duration: 0.15 }}
-              >
-                <Icon size={14} />
-              </motion.a>
-            ))}
+            <h3 className="font-display font-bold text-white text-xl group-hover:text-[#00ff88] transition-colors leading-tight">
+              {project.title}
+            </h3>
           </div>
         </div>
 
@@ -286,7 +334,7 @@ export default function Projects() {
           ))}
         </motion.div>
 
-        {/* Minor 3 — smaller grid */}
+        {/* Other projects */}
         <div className="grid md:grid-cols-3 gap-5">
           {projects.filter((p) => !p.featured).map((p, i) => (
             <ProjectCard key={p.id} project={p} index={i + 3} />
