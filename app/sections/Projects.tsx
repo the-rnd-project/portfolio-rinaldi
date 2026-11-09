@@ -1,6 +1,8 @@
 "use client";
-import { useRef, useState } from "react";
-import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion";
+import { useRef, useState, type CSSProperties } from "react";
+import { motion, useScroll, useTransform, useSpring, useInView, useMotionValue, useMotionTemplate, useReducedMotion } from "framer-motion";
+import { Code2 } from "lucide-react";
+import { useLanguage } from "../i18n/LanguageProvider";
 
 type Project = {
   id: string;
@@ -135,42 +137,94 @@ const projects: Project[] = [
   },
 ];
 
-// Magnetic hover card
+const circuitPaths = [
+  "M0 60H120L180 120H300L340 160H410",
+  "M70 290V240L150 160H260L300 200H410",
+  "M240 0V60L300 120H410V160",
+  "M600 70H530L480 120V160H450",
+  "M600 280H530L490 240H450V200",
+  "M340 320V270L390 220H430V200",
+];
+
+function ProjectCircuit() {
+  return (
+    <svg viewBox="0 0 600 320" fill="none" className="h-full w-full" aria-hidden="true">
+      {circuitPaths.map((path, index) => (
+        <g key={path} stroke={index % 2 === 0 ? "#00ff88" : "#00d4ff"}>
+          <path d={path} strokeOpacity="0.13" />
+          <path
+            d={path}
+            pathLength="100"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeDasharray="5 95"
+            className="project-loop project-data-packet"
+            style={{ animationDelay: `${index * -1.3}s` }}
+          />
+        </g>
+      ))}
+      <rect x="398" y="138" width="64" height="64" rx="12" fill="#07101f" stroke="#00ff88" strokeOpacity="0.4" />
+      <rect x="407" y="147" width="46" height="46" rx="7" stroke="#00d4ff" strokeOpacity="0.3" />
+      <path d="M424 162L416 170L424 178M436 162L444 170L436 178M433 158L427 182" stroke="#00ff88" strokeWidth="2" />
+      {[[120, 60], [150, 160], [300, 120], [530, 70], [530, 280], [340, 270]].map(([cx, cy], index) => (
+        <circle
+          key={`${cx}-${cy}`}
+          cx={cx}
+          cy={cy}
+          r="3"
+          fill={index % 2 === 0 ? "#00ff88" : "#00d4ff"}
+          className="project-loop project-node"
+          style={{ animationDelay: `${index * -0.6}s` }}
+        />
+      ))}
+    </svg>
+  );
+}
+
 function ProjectCard({ project, index }: { project: Project; index: number }) {
+  const { t } = useLanguage();
   const cardRef = useRef<HTMLDivElement>(null);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const reduceMotion = useReducedMotion();
+  const rotateX = useSpring(0, { stiffness: 180, damping: 24 });
+  const rotateY = useSpring(0, { stiffness: 180, damping: 24 });
+  const pointerX = useMotionValue(50);
+  const pointerY = useMotionValue(30);
+  const spotlight = useMotionTemplate`radial-gradient(360px circle at ${pointerX}% ${pointerY}%, ${project.glow}, transparent 75%)`;
   const [hovered, setHovered] = useState(false);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (reduceMotion || e.pointerType === "touch") return;
     const rect = cardRef.current?.getBoundingClientRect();
     if (!rect) return;
-    const x = ((e.clientY - rect.top) / rect.height - 0.5) * 12;
-    const y = -((e.clientX - rect.left) / rect.width - 0.5) * 12;
-    setTilt({ x, y });
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    rotateX.set((0.5 - y) * 7);
+    rotateY.set((x - 0.5) * 7);
+    pointerX.set(x * 100);
+    pointerY.set(y * 100);
   };
 
   return (
     <motion.div
       ref={cardRef}
-      className="group bg-[#030712] border border-[#1a2744] overflow-hidden relative flex flex-col"
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => { setTilt({ x: 0, y: 0 }); setHovered(false); }}
-      initial={{ opacity: 0, y: 70, scale: 0.92 }}
+      className="project-card group bg-[#030712] border border-[#1a2744] overflow-hidden relative flex flex-col"
+      onPointerMove={handlePointerMove}
+      onPointerEnter={(event) => { if (event.pointerType !== "touch") setHovered(true); }}
+      onPointerLeave={() => { rotateX.set(0); rotateY.set(0); setHovered(false); }}
+      initial={{ opacity: 0, y: reduceMotion ? 0 : 50, scale: reduceMotion ? 1 : 0.96 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: "-10%" }}
-      transition={{ duration: 0.9, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: reduceMotion ? 0 : 0.7, delay: reduceMotion ? 0 : (index % 3) * 0.12, ease: [0.22, 1, 0.36, 1] }}
       animate={{
-        rotateX: tilt.x,
-        rotateY: tilt.y,
         borderColor: hovered ? `${project.color}40` : "#1a2744",
         boxShadow: hovered ? `0 24px 64px ${project.glow}` : "0 0 0 transparent",
       }}
-      style={{ transformStyle: "preserve-3d", perspective: 800 }}
+      style={{ rotateX, rotateY, transformPerspective: 1000, "--project-color": project.color, "--scan-delay": `${index * -1.7}s` } as CSSProperties}
     >
       {/* Top glow */}
       <motion.div
-        className="absolute inset-x-0 top-0 h-px"
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px"
         style={{ background: `linear-gradient(90deg, transparent, ${project.color}, transparent)` }}
         animate={{ opacity: hovered ? 1 : 0 }}
         transition={{ duration: 0.3 }}
@@ -178,54 +232,45 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
       {/* Ambient glow overlay */}
       <motion.div
+        aria-hidden="true"
         className="absolute inset-0 pointer-events-none"
         animate={{ opacity: hovered ? 1 : 0 }}
-        style={{ background: `radial-gradient(ellipse at 50% 0%, ${project.glow} 0%, transparent 60%)` }}
+        style={{ background: spotlight }}
         transition={{ duration: 0.4 }}
       />
 
       <div className="relative h-56 overflow-hidden border-b border-[#1a2744] bg-[#07101f] p-3" style={{ transform: "translateZ(8px)" }}>
-        <div
-          className="absolute inset-0 opacity-70"
-          style={{
-            background:
-              "linear-gradient(135deg, rgba(255,255,255,0.06), transparent 34%), radial-gradient(circle at 20% 10%, rgba(0,212,255,0.12), transparent 32%)",
-          }}
-        />
-
         <div className="relative h-full overflow-hidden border border-[#25334f] bg-[#020712] shadow-2xl">
           <div className="flex h-6 items-center gap-1.5 border-b border-[#25334f] bg-[#0c1324] px-3">
             <span className="h-2 w-2 rounded-full bg-[#ff5f57]" />
             <span className="h-2 w-2 rounded-full bg-[#ffbd2e]" />
             <span className="h-2 w-2 rounded-full bg-[#28c840]" />
-            <span className="ml-2 h-1.5 flex-1 bg-[#18233b]" />
+            <Code2 size={11} aria-hidden="true" className="ml-auto text-slate-500" />
           </div>
           <motion.img
             src={project.image}
-            alt={`${project.title} preview`}
-            className={`h-[calc(100%-1.5rem)] w-full ${project.imageFit === "contain" ? "object-contain p-3" : "object-cover"} opacity-90 transition duration-500 group-hover:opacity-100`}
-            animate={{ scale: hovered ? 1.035 : 1 }}
+            alt={`${t(project.title)} — ${t("preview")}`}
+            className={`h-[calc(100%-1.5rem)] w-full bg-white ${project.imageFit === "contain" ? "object-contain p-3" : "object-cover"}`}
+            animate={{ scale: hovered && !reduceMotion ? 1.035 : 1 }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           />
+          <div aria-hidden="true" className="project-loop project-preview-scan pointer-events-none absolute inset-x-0 top-6 h-16" />
+          <div aria-hidden="true" className="project-preview-grid pointer-events-none absolute inset-0 top-6" />
         </div>
 
         {project.secondaryImage && (
           <motion.div
             className="absolute bottom-4 right-5 h-36 w-20 overflow-hidden rounded-[18px] border border-[#34476d] bg-[#030712] p-1.5 shadow-2xl"
-            animate={{ y: hovered ? -4 : 0, scale: hovered ? 1.04 : 1 }}
+            animate={{ y: hovered && !reduceMotion ? -4 : 0, scale: hovered && !reduceMotion ? 1.04 : 1 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
             <img
               src={project.secondaryImage}
-              alt={`${project.title} mobile preview`}
-              className="h-full w-full rounded-[13px] object-cover"
+              alt={`${t(project.title)} — ${t("mobile preview")}`}
+              className="h-full w-full rounded-[13px] bg-white object-cover"
             />
           </motion.div>
         )}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: `linear-gradient(180deg, transparent 55%, #030712 118%), radial-gradient(circle at 20% 0%, ${project.glow}, transparent 45%)` }}
-        />
       </div>
 
       <div className="p-6 flex flex-col flex-1" style={{ transform: "translateZ(10px)", position: "relative" }}>
@@ -236,21 +281,21 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               className="font-mono text-xs tracking-widest mb-1.5 block"
               style={{ color: project.color }}
             >
-              {project.category.toUpperCase()}
+              {t(project.category).toUpperCase()}
             </motion.span>
             <h3 className="font-display font-bold text-white text-xl group-hover:text-[#00ff88] transition-colors leading-tight">
-              {project.title}
+              {t(project.title)}
             </h3>
           </div>
         </div>
 
-        <p className="text-gray-500 text-sm leading-relaxed mb-5 flex-1">{project.description}</p>
+        <p className="text-gray-500 text-sm leading-relaxed mb-5 flex-1">{t(project.description)}</p>
 
         {/* Tech stack */}
         <div className="flex flex-wrap gap-1.5">
-          {project.tech.map((t, i) => (
+          {project.tech.map((tech, i) => (
             <motion.span
-              key={t}
+              key={tech}
               className="font-mono text-xs px-2 py-1 bg-[#0a0f1e] border border-[#1a2744] text-gray-600"
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -258,7 +303,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               transition={{ delay: index * 0.1 + i * 0.04 }}
               whileHover={{ color: project.color, borderColor: `${project.color}40` }}
             >
-              {t}
+              {t(tech)}
             </motion.span>
           ))}
         </div>
@@ -277,8 +322,11 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 }
 
 export default function Projects() {
+  const { t } = useLanguage();
+  const reduceMotion = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null!);
   const isInView = useInView(sectionRef, { once: true, margin: "-10%" });
+  const effectsInView = useInView(sectionRef, { margin: "100px" });
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
 
   const yHeading = useTransform(scrollYProgress, [0, 1], [60, -40]);
@@ -286,7 +334,11 @@ export default function Projects() {
   const sectionOpacity = useTransform(scrollYProgress, [0, 0.05, 0.95, 1], [0, 1, 1, 0.6]);
 
   return (
-    <section id="projects" ref={sectionRef} className="py-36 px-6 relative overflow-hidden">
+    <section id="projects" ref={sectionRef} data-active={effectsInView} className="project-showcase py-16 md:py-20 px-6 relative overflow-hidden">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-16 h-[480px] project-circuit-grid" />
+      <div aria-hidden="true" className="pointer-events-none absolute -right-16 top-10 h-80 w-[600px] max-w-full opacity-60 md:right-0 md:opacity-90">
+        <ProjectCircuit />
+      </div>
       {/* BG accent */}
       <motion.div
         className="absolute right-0 bottom-0 w-96 h-96 rounded-full pointer-events-none"
@@ -297,9 +349,9 @@ export default function Projects() {
         }}
       />
 
-      <div className="max-w-7xl mx-auto">
+      <div className="relative max-w-7xl mx-auto">
         {/* Header */}
-        <motion.div className="mb-16" style={{ y: yHeading }}>
+        <motion.div className="mb-8 md:mb-10" style={{ y: reduceMotion ? 0 : yHeading }}>
           <motion.div
             className="flex items-center gap-3 mb-3"
             initial={{ opacity: 0, x: -30 }}
@@ -307,18 +359,16 @@ export default function Projects() {
             transition={{ duration: 0.7 }}
           >
             <span className="font-mono text-xs text-[#00ff88] tracking-widest">03.</span>
-            <span className="font-mono text-xs text-gray-500 tracking-widest">PROJECTS</span>
+            <span className="font-mono text-xs text-gray-500 tracking-widest">{t("PROJECTS")}</span>
           </motion.div>
-          <div className="flex items-end justify-between">
-            <motion.h2
-              className="font-display text-5xl md:text-6xl font-bold text-white"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.1 }}
-            >
-              Featured <span className="gradient-text">Work</span>
-            </motion.h2>
-          </div>
+          <motion.h2
+            className="font-display text-5xl md:text-6xl font-bold text-white"
+            initial={{ opacity: 0, y: reduceMotion ? 0 : 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.1 }}
+          >
+            {t("Featured")} <span className="gradient-text">{t("Work")}</span>
+          </motion.h2>
           <motion.div
             className="h-0.5 bg-gradient-to-r from-[#00ff88] to-transparent mt-4"
             initial={{ width: 0 }}
@@ -328,7 +378,7 @@ export default function Projects() {
         </motion.div>
 
         {/* Featured 3 — larger grid */}
-        <motion.div className="grid md:grid-cols-3 gap-5 mb-5" style={{ x: xFeatured }}>
+        <motion.div className="grid md:grid-cols-3 gap-5 mb-5" style={{ x: reduceMotion ? 0 : xFeatured }}>
           {projects.filter((p) => p.featured).map((p, i) => (
             <ProjectCard key={p.id} project={p} index={i} />
           ))}

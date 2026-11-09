@@ -1,19 +1,23 @@
 "use client";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
   motion,
   useScroll,
   useTransform,
   useSpring,
   useInView,
+  useReducedMotion,
+  useMotionValue,
+  animate,
 } from "framer-motion";
 import { BookOpen, Code2, Database, Cpu } from "lucide-react";
 import dynamic from "next/dynamic";
+import { useLanguage } from "../i18n/LanguageProvider";
 
 const FloatingSphere = dynamic(() => import("../components/FloatingSphere"), { ssr: false });
 
 const stats = [
-  { value: "4+", label: "Professional Years" },
+  { value: "5", label: "Professional Years" },
   { value: "6", label: "Teaching Roles" },
   { value: "3", label: "Registered Apps" },
   { value: "2026", label: "AI Master's Track" },
@@ -26,17 +30,64 @@ const highlights = [
   { icon: BookOpen, title: "AI & UX Foundation", desc: "Applied ML, usability testing, user manuals", color: "#00ff88" },
 ];
 
-const itemVar = {
-  hidden: { opacity: 0, y: 50, filter: "blur(8px)" },
-  show: (i: number) => ({
-    opacity: 1, y: 0, filter: "blur(0px)",
-    transition: { duration: 0.9, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] },
-  }),
-};
+function AnimatedStat({ stat, index }: { stat: typeof stats[number]; index: number }) {
+  const { t } = useLanguage();
+  const ref = useRef<HTMLDivElement>(null);
+  const visible = useInView(ref, { once: true, margin: "-32px" });
+  const reduceMotion = useReducedMotion();
+  const isYear = stat.label === "AI Master's Track";
+  const count = useMotionValue(isYear ? Number(stat.value) : 0);
+  const display = useTransform(count, (value) => Math.round(value).toString());
+
+  useEffect(() => {
+    if (!visible || isYear) return;
+    const controls = animate(count, Number(stat.value), {
+      duration: reduceMotion ? 0 : 1.3,
+      delay: reduceMotion ? 0 : index * 0.1,
+      ease: "easeOut",
+    });
+    return () => controls.stop();
+  }, [visible, isYear, count, stat.value, index, reduceMotion]);
+
+  return (
+    <motion.div
+      ref={ref}
+      className="relative overflow-hidden bg-[#0a0f1e] border border-[#1a2744] p-4"
+      initial={{ opacity: 0, y: reduceMotion ? 0 : 20 }}
+      animate={visible ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: reduceMotion ? 0 : 0.5, delay: reduceMotion ? 0 : index * 0.08 }}
+      whileHover={{
+        y: reduceMotion ? 0 : -4,
+        borderColor: "rgba(0,255,136,0.4)",
+        boxShadow: "0 8px 32px rgba(0,255,136,0.1)",
+        transition: { duration: 0.2 },
+      }}
+    >
+      <div className="font-display text-3xl font-bold gradient-text tabular-nums">
+        <span className="sr-only">{stat.value}</span>
+        <motion.span aria-hidden="true">{display}</motion.span>
+      </div>
+      <div className="font-mono text-xs text-gray-500 mt-1 tracking-wider">{t(stat.label).toUpperCase()}</div>
+      <motion.div
+        aria-hidden="true"
+        className="absolute bottom-0 left-0 h-px w-full origin-left bg-gradient-to-r from-[#00ff88]/70 to-[#00d4ff]/10"
+        initial={{ scaleX: reduceMotion ? 1 : 0 }}
+        animate={visible ? { scaleX: 1 } : {}}
+        transition={{ duration: reduceMotion ? 0 : 1.1, delay: reduceMotion ? 0 : index * 0.1 }}
+      />
+    </motion.div>
+  );
+}
 
 export default function About() {
+  const { t } = useLanguage();
+  const reduceMotion = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null!);
+  const headingRef = useRef<HTMLDivElement>(null);
+  const profileRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-15%" });
+  const headingVisible = useInView(headingRef, { once: true, margin: "-32px" });
+  const profileVisible = useInView(profileRef, { once: true, margin: "-48px" });
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
 
   // Parallax layers
@@ -49,8 +100,23 @@ export default function About() {
   const springYSphere = useSpring(ySphere, { stiffness: 60, damping: 20 });
   const springRot = useSpring(rotSphere, { stiffness: 60, damping: 20 });
 
+  const itemVar = {
+    hidden: { opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 28, filter: reduceMotion ? "none" : "blur(6px)" },
+    show: (i: number) => ({
+      opacity: 1, y: 0, filter: "blur(0px)",
+      transition: { duration: reduceMotion ? 0 : 0.75, delay: reduceMotion ? 0 : i * 0.12, ease: [0.22, 1, 0.36, 1] },
+    }),
+  };
+
   return (
-    <section id="about" ref={sectionRef} className="py-28 md:py-36 px-6 relative overflow-hidden">
+    <section id="about" ref={sectionRef} className="about-section py-16 md:py-20 px-6 relative overflow-hidden">
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-32 h-72 about-reveal-grid"
+        initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.96 }}
+        animate={headingVisible ? { opacity: 1, scale: 1 } : {}}
+        transition={{ duration: reduceMotion ? 0 : 1.5 }}
+      />
       {/* Ambient BG orb */}
       <motion.div
         className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full pointer-events-none"
@@ -62,7 +128,8 @@ export default function About() {
 
       {/* Decorative 3D background */}
       <motion.div
-        className="pointer-events-none absolute left-[46%] top-[56%] hidden h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 opacity-45 lg:block xl:left-1/2"
+        aria-hidden="true"
+        className="pointer-events-none absolute left-[46%] top-[56%] hidden h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 opacity-45 lg:block xl:left-1/2 motion-reduce:!hidden"
         style={{ y: springYSphere, rotate: springRot }}
         initial={{ opacity: 0, scale: 0.8 }}
         animate={isInView ? { opacity: 0.45, scale: 1 } : {}}
@@ -78,48 +145,49 @@ export default function About() {
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Section header */}
         <motion.div
-          className="mb-12 md:mb-14"
-          style={{ y: yLeft }}
-          initial={{ opacity: 0, x: -40 }}
-          animate={isInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          ref={headingRef}
+          className="mb-8 md:mb-10"
+          style={{ y: reduceMotion ? 0 : yLeft }}
         >
           <div className="flex items-center gap-3 mb-3">
             <motion.span
               className="font-mono text-xs text-[#00ff88] tracking-widest"
-              initial={{ opacity: 0, width: 0 }}
-              animate={isInView ? { opacity: 1, width: "auto" } : {}}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              initial={{ opacity: 0 }}
+              animate={headingVisible ? { opacity: 1 } : {}}
+              transition={{ duration: reduceMotion ? 0 : 0.6 }}
             >
               01.
             </motion.span>
-            <span className="font-mono text-xs text-gray-500 tracking-widest">ABOUT_ME</span>
+            <span className="font-mono text-xs text-gray-500 tracking-widest">{t("ABOUT_ME")}</span>
           </div>
-          <h2 className="font-display text-5xl md:text-6xl font-bold text-white">
-            Who Am{" "}
-            <motion.span
-              className="gradient-text"
-              initial={{ opacity: 0 }}
-              animate={isInView ? { opacity: 1 } : {}}
-              transition={{ delay: 0.3, duration: 0.8 }}
-            >
-              I?
-            </motion.span>
+          <h2 aria-label={`${t("Who Am")} ${t("I?")}`} className="font-display text-5xl md:text-6xl font-bold text-white">
+            {[t("Who Am"), t("I?")].map((word, index) => (
+              <span key={index} aria-hidden="true" className="inline-block overflow-hidden pb-2 align-bottom">
+                <motion.span
+                  className={`inline-block ${index === 1 ? "gradient-text" : "mr-[0.24em]"}`}
+                  initial={{ y: reduceMotion ? 0 : "110%", opacity: 0 }}
+                  animate={headingVisible ? { y: "0%", opacity: 1 } : {}}
+                  transition={{ duration: reduceMotion ? 0 : 0.95, delay: reduceMotion ? 0 : 0.1 + index * 0.15, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  {word}
+                </motion.span>
+              </span>
+            ))}
           </h2>
           <motion.div
             className="h-0.5 bg-gradient-to-r from-[#00ff88] to-transparent mt-4"
             initial={{ width: 0 }}
-            animate={isInView ? { width: 96 } : {}}
-            transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            animate={headingVisible ? { width: 96 } : {}}
+            transition={{ duration: reduceMotion ? 0 : 0.8, delay: reduceMotion ? 0 : 0.4, ease: [0.22, 1, 0.36, 1] }}
           />
         </motion.div>
 
         <div className="grid lg:grid-cols-[0.95fr_1.05fr] gap-12 xl:gap-16 items-start">
           {/* Left: Text */}
-          <motion.div className="space-y-6" style={{ y: yLeft }}>
+          <motion.div className="space-y-6" style={{ y: reduceMotion ? 0 : yLeft }}>
             {[
-              <>Halo! Saya <span className="text-[#00ff88] font-medium">Rinaldi Udra Suhanda</span>, lulusan Informatika dan mahasiswa Magister <span className="text-[#00d4ff] font-medium">Kecerdasan Buatan</span> di Universitas Syiah Kuala. Fokus saya ada di software engineering, applied machine learning, dan solusi digital yang scalable.</>,
-              <>Pengalaman saya mencakup pengembangan RESTful API dengan Flask, aplikasi web untuk pemeliharaan fasilitas, layanan inspeksi halal, sertifikasi profesional, sistem informasi pariwisata berbasis Laravel, serta pengujian dan usability testing bersama pengguna.</>,
+              <><span className="text-[#00d4ff] font-medium">{t("AI Master’s candidate")}</span>{t(" with ")}<span className="text-[#00ff88] font-medium">{t("5 years of experience")}</span>{t(" in web and mobile application development.")}{t(" Experienced in designing, developing, and maintaining scalable digital solutions, with a strong foundation in software engineering and applied AI.")}</>,
+              <>{t("Skilled in building applications using ")}<span className="text-[#00ff88] font-medium">{t("Python and Flutter")}</span>{t(", as well as developing intelligent systems with ")}<span className="text-[#00d4ff] font-medium">{t("machine learning and computer vision")}</span>{t(". Passionate about combining software engineering and AI to create practical, user-centered, and impactful solutions.")}</>,
             ].map((text, i) => (
               <motion.p
                 key={i}
@@ -127,7 +195,8 @@ export default function About() {
                 custom={i}
                 variants={itemVar}
                 initial="hidden"
-                animate={isInView ? "show" : "hidden"}
+                whileInView="show"
+                viewport={{ once: true, margin: "-40px" }}
               >
                 {text}
               </motion.p>
@@ -139,7 +208,8 @@ export default function About() {
               custom={2}
               variants={itemVar}
               initial="hidden"
-              animate={isInView ? "show" : "hidden"}
+              whileInView="show"
+              viewport={{ once: true, margin: "-40px" }}
               whileHover={{
                 borderColor: "rgba(0,255,136,0.4)",
                 boxShadow: "0 0 30px rgba(0,255,136,0.08)",
@@ -160,54 +230,44 @@ export default function About() {
                   ["focus", "[\"AI\", \"Software Engineering\", \"Web\"]"],
                   ["location", "\"Banda Aceh, Indonesia\""],
                   ["available", "true"],
-                ].map(([k, v]) => (
-                  <div key={k} className="pl-4">
+                ].map(([k, v], index) => (
+                  <motion.div
+                    key={k}
+                    className="pl-4"
+                    initial={{ opacity: 0, x: reduceMotion ? 0 : -8 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: reduceMotion ? 0 : 0.35, delay: reduceMotion ? 0 : 0.2 + index * 0.1 }}
+                  >
                     <span className="text-[#00ff88]">"{k}"</span>
                     <span className="text-gray-400">: </span>
                     <span className={v === "true" ? "text-[#00ff88]" : "text-yellow-300"}>{v}</span>
                     {k !== "available" && <span className="text-gray-600">,</span>}
-                  </div>
+                  </motion.div>
                 ))}
                 <div>{"}"}</div>
               </div>
             </motion.div>
 
             {/* Stats */}
-            <motion.div
-              className="grid grid-cols-2 gap-3"
-              custom={3}
-              variants={itemVar}
-              initial="hidden"
-              animate={isInView ? "show" : "hidden"}
-            >
+            <div className="grid grid-cols-2 gap-3">
               {stats.map((stat, i) => (
-                <motion.div
-                  key={stat.label}
-                  className="bg-[#0a0f1e] border border-[#1a2744] p-4"
-                  whileHover={{
-                    y: -4,
-                    borderColor: "rgba(0,255,136,0.4)",
-                    boxShadow: "0 8px 32px rgba(0,255,136,0.1)",
-                    transition: { duration: 0.2 },
-                  }}
-                >
-                  <div className="font-display text-3xl font-bold gradient-text">{stat.value}</div>
-                  <div className="font-mono text-xs text-gray-500 mt-1 tracking-wider">{stat.label.toUpperCase()}</div>
-                </motion.div>
+                <AnimatedStat key={stat.label} stat={stat} index={i} />
               ))}
-            </motion.div>
+            </div>
           </motion.div>
 
           {/* Right: profile and highlights */}
-          <motion.div className="space-y-5 lg:pt-2" style={{ y: yRight }}>
+          <motion.div className="space-y-5 lg:pt-2" style={{ y: reduceMotion ? 0 : yRight }}>
             <motion.div
+              ref={profileRef}
               className="relative overflow-hidden border border-[#1a2744] bg-[#0a0f1e] p-3"
               custom={0}
               variants={itemVar}
               initial="hidden"
-              animate={isInView ? "show" : "hidden"}
+              animate={profileVisible ? "show" : "hidden"}
               whileHover={{
-                y: -4,
+                y: reduceMotion ? 0 : -4,
                 borderColor: "rgba(0,255,136,0.45)",
                 boxShadow: "0 16px 42px rgba(0,255,136,0.1)",
                 transition: { duration: 0.2 },
@@ -215,7 +275,7 @@ export default function About() {
             >
               <div className="absolute left-0 top-0 h-full w-0.5 bg-gradient-to-b from-[#00ff88] via-[#00d4ff] to-[#b24bff]" />
               <div className="grid items-center gap-6 sm:grid-cols-[170px_1fr]">
-                <div className="relative aspect-[4/5] overflow-hidden border border-[#2a3b61] bg-[#030712] shadow-2xl">
+                <div data-revealed={profileVisible} className="about-portrait relative aspect-[4/5] overflow-hidden border border-[#2a3b61] bg-[#030712] shadow-2xl">
                   <div
                     className="absolute inset-0 pointer-events-none z-10"
                     style={{
@@ -223,19 +283,33 @@ export default function About() {
                         "linear-gradient(180deg, transparent 52%, rgba(3,7,18,0.78) 100%), radial-gradient(circle at 35% 12%, rgba(0,255,136,0.16), transparent 38%)",
                     }}
                   />
-                  <div className="absolute left-3 top-3 z-20 h-5 w-5 border-l border-t border-[#00ff88]" />
-                  <div className="absolute bottom-3 right-3 z-20 h-5 w-5 border-b border-r border-[#00d4ff]" />
-                  <img
+                  <motion.div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-3 z-20"
+                    initial={{ opacity: 0, scale: reduceMotion ? 1 : 1.15 }}
+                    animate={profileVisible ? { opacity: 1, scale: 1 } : {}}
+                    transition={{ duration: reduceMotion ? 0 : 0.9, delay: reduceMotion ? 0 : 0.4 }}
+                  >
+                    <span className="absolute left-0 top-0 h-5 w-5 border-l-2 border-t-2 border-[#00ff88]" />
+                    <span className="absolute right-0 top-0 h-5 w-5 border-r-2 border-t-2 border-[#00d4ff]/60" />
+                    <span className="absolute bottom-0 left-0 h-5 w-5 border-b-2 border-l-2 border-[#00ff88]/60" />
+                    <span className="absolute bottom-0 right-0 h-5 w-5 border-b-2 border-r-2 border-[#00d4ff]" />
+                  </motion.div>
+                  <motion.img
                     src="/images/profil.png"
-                    alt="Rinaldi Udra Suhanda profile photo"
-                    className="h-full w-full object-cover object-center transition duration-500 group-hover:scale-[1.04]"
+                    alt={t("Rinaldi Udra Suhanda profile photo")}
+                    className="h-full w-full object-cover object-center"
+                    initial={{ scale: reduceMotion ? 1 : 1.08, filter: reduceMotion ? "none" : "grayscale(1) brightness(0.7)" }}
+                    animate={profileVisible ? { scale: 1, filter: "grayscale(0) brightness(1)" } : {}}
+                    transition={{ duration: reduceMotion ? 0 : 1.6, delay: reduceMotion ? 0 : 0.25, ease: [0.22, 1, 0.36, 1] }}
                   />
+                  <div aria-hidden="true" className="about-portrait-scan pointer-events-none absolute inset-0 z-30" />
                 </div>
                 <div>
-                  <div className="font-mono text-xs tracking-widest text-[#00ff88]">PROFILE</div>
+                  <div className="font-mono text-xs tracking-widest text-[#00ff88]">{t("PROFILE")}</div>
                   <div className="mt-2 font-display text-lg font-semibold text-white">Rinaldi Udra Suhanda</div>
                   <p className="mt-2 text-sm leading-relaxed text-gray-500">
-                    Master&apos;s Degree Candidate in Artificial Intelligence dengan pengalaman praktis membangun software, RESTful API, aplikasi web, dan dokumentasi pengguna.
+                    {t("Master's Degree Candidate in Artificial Intelligence with practical experience building software, RESTful APIs, web applications, and user documentation.")}
                   </p>
                 </div>
               </div>
@@ -250,9 +324,10 @@ export default function About() {
                   custom={i}
                   variants={itemVar}
                   initial="hidden"
-                  animate={isInView ? "show" : "hidden"}
+                  whileInView="show"
+                  viewport={{ once: true, margin: "-40px" }}
                   whileHover={{
-                    x: 6,
+                    x: reduceMotion ? 0 : 6,
                     borderColor: `${item.color}40`,
                     boxShadow: `0 4px 24px ${item.color}10`,
                     transition: { duration: 0.2 },
@@ -261,14 +336,14 @@ export default function About() {
                   <motion.div
                     className="p-2 border border-[#1a2744] flex-shrink-0"
                     style={{ color: item.color }}
-                    whileHover={{ rotate: 10 }}
+                    whileHover={{ rotate: reduceMotion ? 0 : 10 }}
                     transition={{ duration: 0.2 }}
                   >
                     <item.icon size={16} />
                   </motion.div>
                   <div>
-                    <div className="font-display font-semibold text-white text-sm group-hover:text-[#00ff88] transition-colors">{item.title}</div>
-                    <div className="font-mono text-xs text-gray-500 mt-0.5">{item.desc}</div>
+                    <div className="font-display font-semibold text-white text-sm group-hover:text-[#00ff88] transition-colors">{t(item.title)}</div>
+                    <div className="font-mono text-xs text-gray-500 mt-0.5">{t(item.desc)}</div>
                   </div>
                   <motion.div
                     className="ml-auto text-gray-700 group-hover:text-[#00ff88] text-xs font-mono"

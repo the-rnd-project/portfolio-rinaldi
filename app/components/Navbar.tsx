@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import { motion, useScroll, useSpring, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { useLanguage } from "../i18n/LanguageProvider";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const navLinks = [
   { href: "#home", label: "HOME" },
@@ -13,6 +15,7 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const { t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
@@ -97,11 +100,12 @@ export default function Navbar() {
               >
                 &gt;_
               </motion.span>
-              <span className="text-white ml-1">RinaldiUdraSuhanda</span>
+              <span className="text-white ml-1 sm:hidden">Rinaldi</span>
+              <span className="text-white ml-1 hidden sm:inline">RinaldiUdraSuhanda</span>
             </motion.a>
 
             {/* Desktop nav */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden xl:flex items-center gap-5">
               {navLinks.map((link, i) => {
                 const isActive = activeSection === link.href.replace("#", "");
                 return (
@@ -116,7 +120,7 @@ export default function Navbar() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.6 + i * 0.06 }}
                   >
-                    {link.label}
+                    {t(link.label)}
                     {/* Active/hover underline */}
                     <motion.span
                       className="absolute -bottom-1 left-0 h-px bg-[#00ff88]"
@@ -153,29 +157,36 @@ export default function Navbar() {
                   whileHover={{ x: "0%" }}
                   transition={{ duration: 0.25 }}
                 />
-                <span className="relative group-hover:text-black transition-colors duration-250">HIRE ME</span>
+                <span className="relative group-hover:text-black transition-colors duration-250">{t("HIRE ME")}</span>
               </motion.a>
             </div>
 
-            {/* Mobile button */}
-            <motion.button
-              className="md:hidden text-[#00ff88] p-1"
-              onClick={() => setMenuOpen(!menuOpen)}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <AnimatePresence mode="wait">
-                {menuOpen ? (
-                  <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                    <X size={22} />
-                  </motion.span>
-                ) : (
-                  <motion.span key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                    <Menu size={22} />
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </motion.button>
+            <div className="flex items-center gap-3">
+              <LanguageSwitcher />
+
+              {/* Mobile button */}
+              <motion.button
+                className="xl:hidden text-[#00ff88] p-1"
+                onClick={() => setMenuOpen(!menuOpen)}
+                aria-label={t(menuOpen ? "Close menu" : "Open menu")}
+                aria-expanded={menuOpen}
+                aria-controls="mobile-navigation"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <AnimatePresence mode="wait">
+                  {menuOpen ? (
+                    <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                      <X size={22} />
+                    </motion.span>
+                  ) : (
+                    <motion.span key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                      <Menu size={22} />
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </motion.button>
+            </div>
           </div>
         </motion.div>
 
@@ -183,7 +194,8 @@ export default function Navbar() {
         <AnimatePresence>
           {menuOpen && (
             <motion.div
-              className="md:hidden bg-[#030712]/95 backdrop-blur-xl border-b border-[#1a2744] px-6 py-6 flex flex-col gap-1"
+              id="mobile-navigation"
+              className="xl:hidden bg-[#030712]/95 backdrop-blur-xl border-b border-[#1a2744] px-6 py-6 flex flex-col gap-1"
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
@@ -200,7 +212,7 @@ export default function Navbar() {
                   transition={{ delay: i * 0.06 }}
                 >
                   <span className="text-[#00ff88] opacity-50">{String(i + 1).padStart(2, "0")}.</span>
-                  {link.label}
+                  {t(link.label)}
                 </motion.a>
               ))}
             </motion.div>

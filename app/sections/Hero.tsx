@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import { ChevronDown, Github, Linkedin, Mail, Terminal } from "lucide-react";
 import dynamic from "next/dynamic";
+import { useLanguage } from "../i18n/LanguageProvider";
 
 const ThreeScene = dynamic(() => import("../components/ThreeScene"), { ssr: false });
 
@@ -102,6 +103,7 @@ function NeuralBackground() {
 }
 
 export default function Hero() {
+  const { language, t } = useLanguage();
   const [roleIndex, setRoleIndex] = useState(0);
   const [displayed, setDisplayed] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -125,7 +127,12 @@ export default function Hero() {
   }, []);
 
   useEffect(() => {
-    const current = roles[roleIndex];
+    setDisplayed("");
+    setIsDeleting(false);
+  }, [language]);
+
+  useEffect(() => {
+    const current = t(roles[roleIndex]);
     let timeout: ReturnType<typeof setTimeout>;
 
     if (!isDeleting && displayed.length < current.length) {
@@ -140,7 +147,7 @@ export default function Hero() {
     }
 
     return () => clearTimeout(timeout);
-  }, [displayed, isDeleting, roleIndex]);
+  }, [displayed, isDeleting, roleIndex, t]);
 
   const containerVar = {
     hidden: {},
@@ -208,7 +215,7 @@ export default function Hero() {
           <motion.div variants={itemVar} className="mb-7">
             <span className="inline-flex items-center gap-2 font-mono text-xs text-[#00ff88] bg-[#00ff88]/5 border border-[#00ff88]/30 px-4 py-2">
               <Terminal size={11} />
-              INITIALIZING PROFILE...
+              {t("INITIALIZING PROFILE...")}
               <motion.span animate={{ opacity: [1, 0] }} transition={{ repeat: Infinity, duration: 0.9, ease: "steps(1)" }}>█</motion.span>
             </span>
           </motion.div>
@@ -225,7 +232,7 @@ export default function Hero() {
           </motion.div>
 
           {/* Typewriter */}
-          <motion.div variants={itemVar} className="font-mono text-lg md:text-xl text-gray-300 mb-6 flex items-center gap-2 h-7">
+          <motion.div variants={itemVar} className="font-mono text-sm sm:text-lg md:text-xl text-gray-300 mb-6 flex items-center gap-2 min-h-7">
             <span className="text-[#00ff88]">&gt;</span>
             <span>{displayed}</span>
             <motion.span
@@ -237,9 +244,8 @@ export default function Hero() {
 
           {/* Description */}
           <motion.p variants={itemVar} className="text-gray-400 text-base md:text-lg max-w-md mb-9 leading-relaxed">
-            Lulusan Informatika dan mahasiswa Magister{" "}
-            <span className="text-[#00d4ff]">Kecerdasan Buatan</span> yang berfokus membangun{" "}
-            <span className="text-[#00ff88]">perangkat lunak, aplikasi web, dan RESTful API</span>, serta solusi digital yang berpusat pada pengguna.
+            <span className="text-[#00d4ff]">{t("AI Master’s candidate")}</span>{t(" with ")}
+            <span className="text-[#00ff88]">{t("5 years of experience")}</span>{t(" in web and mobile application development.")}
           </motion.p>
 
           {/* CTA Buttons */}
@@ -250,13 +256,13 @@ export default function Hero() {
               whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
             >
               <span className="absolute inset-0 bg-[#00ff88] translate-x-[-101%] group-hover:translate-x-0 transition-transform duration-300" />
-              <span className="relative group-hover:text-black text-[#00ff88] transition-colors duration-300">VIEW PROJECTS →</span>
+              <span className="relative group-hover:text-black text-[#00ff88] transition-colors duration-300">{t("VIEW PROJECTS →")}</span>
             </motion.a>
             <motion.a href="#contact"
               className="px-8 py-3.5 font-mono text-sm tracking-widest font-bold text-gray-400 border border-[#1a2744] hover:border-[#00d4ff] hover:text-[#00d4ff] transition-all duration-300"
               whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
             >
-              CONTACT ME
+              {t("CONTACT ME")}
             </motion.a>
           </motion.div>
 
@@ -293,7 +299,7 @@ export default function Hero() {
       >
         <motion.span className="font-mono text-xs tracking-widest"
           animate={{ opacity: [0.3, 1, 0.3] }}
-          transition={{ repeat: Infinity, duration: 2.5 }}>SCROLL</motion.span>
+          transition={{ repeat: Infinity, duration: 2.5 }}>{t("SCROLL")}</motion.span>
         <motion.div animate={{ y: [0, 7, 0] }} transition={{ repeat: Infinity, duration: 1.6, ease: "easeInOut" }}>
           <ChevronDown size={16} />
         </motion.div>

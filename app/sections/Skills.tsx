@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion";
+import { useLanguage } from "../i18n/LanguageProvider";
 
 const skillCategories = [
   {
@@ -140,6 +141,7 @@ function SkillBar({ name, level, color, isInView, delay }: {
 }
 
 export default function Skills() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null!);
   const isInView = useInView(sectionRef, { once: true, margin: "-10%" });
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
@@ -149,7 +151,7 @@ export default function Skills() {
   const yBadges = useTransform(scrollYProgress, [0, 1], [80, -30]);
 
   return (
-    <section id="skills" ref={sectionRef} className="py-36 px-6 relative bg-[#0a0f1e]/30 overflow-hidden">
+    <section id="skills" ref={sectionRef} className="py-16 md:py-20 px-6 relative bg-[#0a0f1e]/30 overflow-hidden">
       {/* BG accent */}
       <motion.div
         className="absolute left-0 top-1/3 w-80 h-80 rounded-full pointer-events-none"
@@ -161,7 +163,7 @@ export default function Skills() {
 
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <motion.div className="mb-20" style={{ y: yHeading }}>
+        <motion.div className="mb-10 md:mb-12" style={{ y: yHeading }}>
           <motion.div
             className="flex items-center gap-3 mb-3"
             initial={{ opacity: 0, x: -30 }}
@@ -169,7 +171,7 @@ export default function Skills() {
             transition={{ duration: 0.7 }}
           >
             <span className="font-mono text-xs text-[#00ff88] tracking-widest">02.</span>
-            <span className="font-mono text-xs text-gray-500 tracking-widest">TECH_STACK</span>
+            <span className="font-mono text-xs text-gray-500 tracking-widest">{t("TECH_STACK")}</span>
           </motion.div>
           <motion.h2
             className="font-display text-5xl md:text-6xl font-bold text-white"
@@ -177,8 +179,8 @@ export default function Skills() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.1 }}
           >
-            Skills &{" "}
-            <span className="gradient-text">Expertise</span>
+            {t("Skills &")}{" "}
+            <span className="gradient-text">{t("Expertise")}</span>
           </motion.h2>
           <motion.div
             className="h-0.5 bg-gradient-to-r from-[#00ff88] to-transparent mt-4"
@@ -200,7 +202,7 @@ export default function Skills() {
               <TiltCard color={cat.color} glow={cat.glow}>
                 <div className="flex items-center gap-2 mb-6">
                   <span className="font-mono text-[10px] text-gray-500">{cat.icon}</span>
-                  <h3 className="font-display font-semibold text-white text-sm">{cat.title}</h3>
+                  <h3 className="font-display font-semibold text-white text-sm">{t(cat.title)}</h3>
                   <motion.div
                     className="ml-auto w-2 h-2 rounded-full"
                     style={{ background: cat.color }}
@@ -212,7 +214,7 @@ export default function Skills() {
                   {cat.skills.map((skill, si) => (
                     <SkillBar
                       key={skill.name}
-                      name={skill.name}
+                      name={t(skill.name)}
                       level={skill.level}
                       color={cat.color}
                       isInView={isInView}
@@ -233,7 +235,7 @@ export default function Skills() {
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.6, delay: 0.5 }}
           >
-            // TECHNOLOGIES I WORK WITH
+            {t("// TECHNOLOGIES I WORK WITH")}
           </motion.p>
           <div className="flex flex-wrap gap-2">
             {techBadges.map((tech, i) => (
@@ -252,7 +254,7 @@ export default function Skills() {
                 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {tech}
+                {t(tech)}
               </motion.span>
             ))}
           </div>

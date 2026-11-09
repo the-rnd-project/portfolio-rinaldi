@@ -2,6 +2,7 @@
 import { useRef, useState } from "react";
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
 import { BookOpen, Mail, MapPin, Send, Github, Linkedin } from "lucide-react";
+import { useLanguage } from "../i18n/LanguageProvider";
 
 const contactInfo = [
   { icon: Mail, label: "Email", value: "rinaldiudra@gmail.com", href: "mailto:rinaldiudra@gmail.com", color: "#00ff88" },
@@ -66,6 +67,7 @@ function FormField({
 }
 
 export default function Contact() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null!);
   const isInView = useInView(sectionRef, { once: true, margin: "-10%" });
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
@@ -89,7 +91,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" ref={sectionRef} className="py-36 px-6 relative overflow-hidden">
+    <section id="contact" ref={sectionRef} className="py-16 md:py-20 px-6 relative overflow-hidden">
       {/* Pulsing center glow */}
       <motion.div
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
@@ -101,7 +103,7 @@ export default function Contact() {
 
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <motion.div className="mb-20 text-center" style={{ y: yHeading }}>
+        <motion.div className="mb-10 md:mb-12 text-center" style={{ y: yHeading }}>
           <motion.div
             className="flex items-center justify-center gap-3 mb-3"
             initial={{ opacity: 0 }}
@@ -109,7 +111,7 @@ export default function Contact() {
             transition={{ duration: 0.7 }}
           >
             <span className="font-mono text-xs text-[#00ff88] tracking-widest">05.</span>
-            <span className="font-mono text-xs text-gray-500 tracking-widest">CONTACT</span>
+            <span className="font-mono text-xs text-gray-500 tracking-widest">{t("CONTACT")}</span>
           </motion.div>
           <motion.h2
             className="font-display text-5xl md:text-6xl font-bold text-white mb-4"
@@ -117,7 +119,7 @@ export default function Contact() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.1 }}
           >
-            Let&apos;s <span className="gradient-text">Connect</span>
+            {t("Let’s")} <span className="gradient-text">{t("Connect")}</span>
           </motion.h2>
           <motion.p
             className="text-gray-400 max-w-xl mx-auto"
@@ -125,8 +127,7 @@ export default function Contact() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            Tertarik berkolaborasi untuk software engineering, aplikasi web, RESTful API, atau solusi AI yang user-centered?
-            Inbox saya selalu terbuka.
+            {t("Interested in collaborating on software engineering, web applications, RESTful APIs, or user-centered AI solutions? My inbox is always open.")}
           </motion.p>
         </motion.div>
 
@@ -158,7 +159,7 @@ export default function Contact() {
                   <item.icon size={16} />
                 </motion.div>
                 <div>
-                  <div className="font-mono text-xs text-gray-600">{item.label}</div>
+                  <div className="font-mono text-xs text-gray-600">{t(item.label)}</div>
                   <div className="text-sm text-gray-300 group-hover:text-[#00ff88] transition-colors">{item.value}</div>
                 </div>
                 {/* Hover line */}
@@ -179,7 +180,7 @@ export default function Contact() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.6 }}
             >
-              <p className="font-mono text-xs text-gray-600 tracking-widest mb-3">// FIND ME ONLINE</p>
+              <p className="font-mono text-xs text-gray-600 tracking-widest mb-3">{t("// FIND ME ONLINE")}</p>
               <div className="flex gap-3">
                 {socials.map(({ icon: Icon, href, label }, i) => (
                   <motion.a
@@ -224,8 +225,8 @@ export default function Contact() {
                 transition={{ repeat: Infinity, duration: 2 }}
               />
               <div>
-                <div className="font-mono text-xs text-[#00ff88]">AVAILABLE FOR HIRE</div>
-                <div className="font-mono text-xs text-gray-600 mt-0.5">Open to full-time & freelance</div>
+                <div className="font-mono text-xs text-[#00ff88]">{t("AVAILABLE FOR HIRE")}</div>
+                <div className="font-mono text-xs text-gray-600 mt-0.5">{t("Open to full-time & freelance")}</div>
               </div>
             </motion.div>
           </motion.div>
@@ -273,15 +274,15 @@ export default function Contact() {
                       animate={{ textShadow: ["0 0 10px #00ff88", "0 0 30px #00ff88", "0 0 10px #00ff88"] }}
                       transition={{ repeat: Infinity, duration: 2 }}
                     >
-                      ✓ MESSAGE SENT
+                      {t("✓ MESSAGE SENT")}
                     </motion.div>
-                    <p className="text-gray-400 text-sm">Terima kasih! Saya akan segera menghubungi Anda.</p>
+                    <p className="text-gray-400 text-sm">{t("Thank you! I will get back to you soon.")}</p>
                     <motion.button
                       onClick={() => setSent(false)}
                       className="mt-6 font-mono text-xs text-gray-600 hover:text-[#00ff88] transition-colors"
                       whileHover={{ scale: 1.05 }}
                     >
-                      Send another →
+                      {t("Send another →")}
                     </motion.button>
                   </motion.div>
                 ) : (
@@ -294,11 +295,11 @@ export default function Contact() {
                     exit={{ opacity: 0 }}
                   >
                     <div className="grid sm:grid-cols-2 gap-5">
-                      <FormField label="NAME" value={form.name} onChange={(v) => setForm(f => ({ ...f, name: v }))} placeholder="John Doe" />
-                      <FormField label="EMAIL" type="email" value={form.email} onChange={(v) => setForm(f => ({ ...f, email: v }))} placeholder="john@example.com" />
+                      <FormField label={t("NAME")} value={form.name} onChange={(v) => setForm(f => ({ ...f, name: v }))} placeholder="John Doe" />
+                      <FormField label={t("EMAIL")} type="email" value={form.email} onChange={(v) => setForm(f => ({ ...f, email: v }))} placeholder="john@example.com" />
                     </div>
-                    <FormField label="SUBJECT" value={form.subject} onChange={(v) => setForm(f => ({ ...f, subject: v }))} placeholder="Project collaboration" />
-                    <FormField label="MESSAGE" value={form.message} onChange={(v) => setForm(f => ({ ...f, message: v }))} placeholder="Ceritakan tentang proyek Anda..." rows={5} />
+                    <FormField label={t("SUBJECT")} value={form.subject} onChange={(v) => setForm(f => ({ ...f, subject: v }))} placeholder={t("Project collaboration")} />
+                    <FormField label={t("MESSAGE")} value={form.message} onChange={(v) => setForm(f => ({ ...f, message: v }))} placeholder={t("Tell me about your project...")} rows={5} />
 
                     <motion.button
                       type="submit"
@@ -316,14 +317,14 @@ export default function Contact() {
                       <span className="relative flex items-center gap-2 group-hover:text-black transition-colors duration-300">
                         {sending ? (
                           <>
-                            SENDING...
+                            {t("SENDING...")}
                             <motion.span animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }}>
                               ◌
                             </motion.span>
                           </>
                         ) : (
                           <>
-                            SEND MESSAGE
+                            {t("SEND MESSAGE")}
                             <motion.span whileHover={{ x: 4, rotate: -10 }} transition={{ duration: 0.15 }}>
                               <Send size={14} />
                             </motion.span>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import SmoothScroll from "./components/SmoothScroll";
 import MagneticCursor from "./components/MagneticCursor";
+import { LanguageProvider } from "./i18n/LanguageProvider";
 
 export const metadata: Metadata = {
   title: "Rinaldi Udra Suhanda | Software Engineer & AI Master's Candidate",
@@ -15,10 +16,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className="scanline">
-        <MagneticCursor />
-        <SmoothScroll>
-          {children}
-        </SmoothScroll>
+        <LanguageProvider>
+          <MagneticCursor />
+          <SmoothScroll>
+            {children}
+          </SmoothScroll>
+        </LanguageProvider>
       </body>
     </html>
   );

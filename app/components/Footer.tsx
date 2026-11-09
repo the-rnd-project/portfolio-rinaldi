@@ -1,8 +1,10 @@
 "use client";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { useLanguage } from "../i18n/LanguageProvider";
 
 export default function Footer() {
+  const { t } = useLanguage();
   const ref = useRef<HTMLElement>(null!);
   const isInView = useInView(ref, { once: true });
 
@@ -37,10 +39,10 @@ export default function Footer() {
           >
             &gt;_
           </motion.span>{" "}
-          Built with{" "}
+          {t("Built with")}{" "}
           <span className="text-gray-500">Next.js</span>,{" "}
           <span className="text-gray-500">Three.js</span> &{" "}
-          <span className="text-gray-500">Framer Motion</span> by{" "}
+          <span className="text-gray-500">Framer Motion</span> {t("by")}{" "}
           <span className="text-[#00ff88]">Rinaldi Udra Suhanda</span>
         </motion.div>
 
@@ -50,7 +52,7 @@ export default function Footer() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.4 }}
         >
-          © {new Date().getFullYear()} All rights reserved.
+          © {new Date().getFullYear()} {t("All rights reserved.")}
         </motion.div>
       </div>
     </motion.footer>

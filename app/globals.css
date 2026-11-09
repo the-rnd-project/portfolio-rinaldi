@@ -111,3 +111,112 @@ a, button { cursor: none; }
 
 /* 3D perspective for cards */
 .perspective-card { perspective: 1000px; }
+
+/* About: a quiet grid reveal and a single portrait scan on entry. */
+.about-reveal-grid {
+  background-image:
+    linear-gradient(rgba(0, 212, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.06) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: radial-gradient(ellipse at 25% 30%, #000, transparent 70%);
+}
+
+.about-portrait-scan {
+  opacity: 0;
+  transform: translateY(-100%);
+  border-bottom: 1px solid var(--neon-green);
+  background: linear-gradient(180deg, transparent 65%, rgba(0, 212, 255, 0.04) 85%, rgba(0, 255, 136, 0.16));
+  box-shadow: 0 12px 24px -16px rgba(0, 255, 136, 0.7);
+}
+
+.about-portrait[data-revealed="true"] .about-portrait-scan {
+  animation: about-portrait-reveal 1.8s 0.35s ease-in-out both;
+}
+
+@keyframes about-portrait-reveal {
+  0% { opacity: 0; transform: translateY(-100%); }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-portrait[data-revealed="true"] .about-portrait-scan {
+    animation: none;
+    display: none;
+  }
+}
+
+/* Project showcase: circuit traces, data packets, and preview scanning. */
+.project-circuit-grid {
+  background-image:
+    linear-gradient(rgba(0, 212, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.045) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse at 75% 15%, #000, transparent 70%);
+}
+
+.project-data-packet {
+  animation: project-packet-travel 7s linear infinite;
+}
+
+.project-node {
+  animation: project-node-glow 3.5s ease-in-out infinite;
+}
+
+.project-preview-scan {
+  background: linear-gradient(0deg, transparent, color-mix(in srgb, var(--project-color) 12%, transparent));
+  border-top: 1px solid color-mix(in srgb, var(--project-color) 55%, transparent);
+  opacity: 0;
+  animation: project-preview-sweep 9s ease-in-out infinite;
+  animation-delay: var(--scan-delay, 0s);
+}
+
+.project-preview-grid {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--project-color) 8%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--project-color) 8%, transparent) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover .project-preview-grid { opacity: 1; }
+}
+
+.project-showcase[data-active="false"] .project-loop {
+  animation-play-state: paused;
+}
+
+@keyframes project-packet-travel {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes project-node-glow {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+
+@keyframes project-preview-sweep {
+  0%, 12% { opacity: 0; transform: translateY(-64px); }
+  18% { opacity: 0.8; }
+  50% { opacity: 0; transform: translateY(224px); }
+  100% { opacity: 0; transform: translateY(224px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-showcase .project-loop {
+    animation: none;
+  }
+
+  .project-showcase .project-preview-scan,
+  .project-showcase .project-data-packet {
+    display: none;
+  }
+
+  .project-showcase .project-preview-grid {
+    transition: none;
+  }
+}

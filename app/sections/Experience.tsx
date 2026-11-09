@@ -2,20 +2,26 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion";
 import { Briefcase, GraduationCap, Award, ExternalLink } from "lucide-react";
+import { useLanguage } from "../i18n/LanguageProvider";
 
 const experiences = [
   {
     type: "work",
-    title: "Programmer",
+    title: "Pengelola Data Program EQUITY",
     company: "Universitas Syiah Kuala",
-    period: "Sep 2025 – Present",
+    period: "01 September 2025 - 20 Agustus 2026",
     image: "/career-ai-platform.svg",
     link: "#projects",
-    linkLabel: "Current focus",
+    linkLabel: "Related projects",
     desc: [
-      "Melanjutkan pekerjaan software engineering di lingkungan Universitas Syiah Kuala",
-      "Berfokus pada pengembangan sistem, aplikasi internal, dan kebutuhan teknologi berbasis data",
-      "Menggabungkan pengalaman software engineering dengan studi Master Kecerdasan Buatan",
+      "Mengelola, mengolah, dan memvalidasi data untuk kebutuhan pemeringkatan universitas nasional dan global, termasuk QS World University Rankings dan Times Higher Education (THE) Impact Rankings.",
+      "Menyiapkan dan mengompilasi data serta dokumen pendukung sesuai indikator pemeringkatan.",
+      "Mengelola data, melakukan verifikasi, dan mendukung pelaporan QS World University Rankings.",
+      "Mengelola dan memantau data THE Impact Rankings berdasarkan indikator Sustainable Development Goals (SDGs).",
+      "Mengelola dan memperbarui website World Class University (WCU) dan website SDGs Universitas Syiah Kuala.",
+      "Mendesain laporan, infografis, dan visualisasi data hasil pemeringkatan.",
+      "Berkoordinasi dengan unit terkait dalam pengumpulan, verifikasi, dan penyelarasan data untuk memastikan akurasi pelaporan.",
+      "Berkontribusi dalam program Equity, termasuk Employer Meeting, Focus Group Discussion (FGD), dan kegiatan pendukung lainnya.",
     ],
     color: "#00ff88",
     glow: "rgba(0,255,136,0.12)",
@@ -23,15 +29,21 @@ const experiences = [
   {
     type: "work",
     title: "Programmer",
-    company: "UPT Laboratorium Terpadu",
-    period: "May 2022 – Aug 2025",
+    company: "UPT Laboratorium Terpadu USK",
+    period: "01 Agustus 2022 - 31 Agustus 2025",
     image: "/career-backend-ml.svg",
     link: "#projects",
     linkLabel: "Related projects",
     desc: [
-      "Mengimplementasikan Agile Software Development dengan Scrum dan Goal-Directed Design",
-      "Menganalisis requirement, membuat UML, persona, storyboard, UI, dan user manual aplikasi",
-      "Mengembangkan RESTful API, aplikasi web Flask, aplikasi mobile Flutter, serta testing dengan Python Unit Test",
+      "Mengimplementasikan Agile Software Development dengan metode Scrum serta Goal-Directed Design dalam proses perancangan dan pengembangan perangkat lunak.",
+      "Menggunakan Trello sebagai alat manajemen proyek untuk memantau progres pekerjaan dan mendukung koordinasi tim.",
+      "Menganalisis kebutuhan perangkat lunak untuk memastikan kesesuaian dengan tujuan bisnis dan spesifikasi teknis.",
+      "Merancang UML Diagram, Persona, Vision, Value Proposition Canvas, Business Model Canvas, Storyboard, dan User Interface berdasarkan kebutuhan pengguna.",
+      "Memanfaatkan layanan Google Cloud Platform (GCP) dalam mendukung pengembangan dan implementasi aplikasi.",
+      "Mengembangkan Web Service berbasis RESTful API menggunakan Flask Framework (Python).",
+      "Membangun aplikasi berbasis web dan mobile menggunakan Flask Framework (Python) dan Flutter Framework.",
+      "Menyusun user manual sebagai panduan penggunaan aplikasi.",
+      "Melakukan pengujian dan evaluasi aplikasi untuk memastikan fungsionalitas dan kualitas sistem sesuai kebutuhan.",
     ],
     color: "#00d4ff",
     glow: "rgba(0,212,255,0.12)",
@@ -96,6 +108,7 @@ const certifications = [
 ];
 
 function TimelineItem({ exp, index, progress }: { exp: typeof experiences[0]; index: number; progress: any }) {
+  const { t } = useLanguage();
   const itemRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(itemRef, { once: true, margin: "-10%" });
 
@@ -140,7 +153,7 @@ function TimelineItem({ exp, index, progress }: { exp: typeof experiences[0]; in
 
       {/* Card */}
       <motion.div
-        className="flex-1 bg-[#030712] border border-[#1a2744] p-5 mb-6 relative overflow-hidden"
+        className="min-w-0 flex-1 bg-[#030712] border border-[#1a2744] p-5 mb-6 relative overflow-hidden"
         whileHover={{
           borderColor: `${exp.color}50`,
           boxShadow: `0 12px 40px ${exp.glow}`,
@@ -151,13 +164,13 @@ function TimelineItem({ exp, index, progress }: { exp: typeof experiences[0]; in
         <motion.a
           href={exp.link}
           className="block mb-5 overflow-hidden border border-[#1a2744] bg-[#0a0f1e]"
-          aria-label={`${exp.linkLabel}: ${exp.title}`}
+          aria-label={`${t(exp.linkLabel)}: ${t(exp.title)}`}
           whileHover={{ borderColor: `${exp.color}70` }}
           transition={{ duration: 0.2 }}
         >
           <motion.img
             src={exp.image}
-            alt={`${exp.title} visual`}
+            alt={`${t(exp.title)} — ${t("visual")}`}
             className="h-36 w-full object-cover opacity-80 grayscale-[35%] transition duration-500 group-hover:opacity-100 group-hover:grayscale-0"
             whileHover={{ scale: 1.04 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
@@ -173,7 +186,7 @@ function TimelineItem({ exp, index, progress }: { exp: typeof experiences[0]; in
           transition={{ duration: 0.6, delay: index * 0.15 + 0.4 }}
         />
 
-        <div className="flex items-start justify-between gap-3 mb-3">
+        <div className="flex flex-col items-start gap-3 mb-3">
           <div>
             <motion.span
               className="font-mono text-xs tracking-widest block mb-1"
@@ -182,11 +195,11 @@ function TimelineItem({ exp, index, progress }: { exp: typeof experiences[0]; in
               {exp.company}
             </motion.span>
             <h4 className="font-display font-bold text-white group-hover:text-[#00ff88] transition-colors">
-              {exp.title}
+              {t(exp.title)}
             </h4>
           </div>
-          <span className="font-mono text-xs text-gray-600 flex-shrink-0 bg-[#0a0f1e] px-2 py-1 border border-[#1a2744]">
-            {exp.period}
+          <span className="max-w-full font-mono text-xs leading-relaxed text-gray-600 bg-[#0a0f1e] px-2 py-1 border border-[#1a2744]">
+            {t(exp.period)}
           </span>
         </div>
 
@@ -207,7 +220,7 @@ function TimelineItem({ exp, index, progress }: { exp: typeof experiences[0]; in
               >
                 ›
               </motion.span>
-              {d}
+              {t(d)}
             </motion.li>
           ))}
         </ul>
@@ -219,7 +232,7 @@ function TimelineItem({ exp, index, progress }: { exp: typeof experiences[0]; in
           whileHover={{ x: 3, borderColor: `${exp.color}80`, color: exp.color }}
           whileTap={{ scale: 0.97 }}
         >
-          {exp.linkLabel}
+          {t(exp.linkLabel)}
           <ExternalLink size={12} />
         </motion.a>
       </motion.div>
@@ -228,6 +241,7 @@ function TimelineItem({ exp, index, progress }: { exp: typeof experiences[0]; in
 }
 
 export default function Experience() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null!);
   const isInView = useInView(sectionRef, { once: true, margin: "-10%" });
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
@@ -237,7 +251,7 @@ export default function Experience() {
   const yHeading = useTransform(scrollYProgress, [0, 1], [50, -30]);
 
   return (
-    <section id="experience" ref={sectionRef} className="py-36 px-6 relative bg-[#0a0f1e]/30 overflow-hidden">
+    <section id="experience" ref={sectionRef} className="py-16 md:py-20 px-6 relative bg-[#0a0f1e]/30 overflow-hidden">
       {/* Animated BG line */}
       <motion.div
         className="absolute left-1/2 top-0 -translate-x-1/2 w-px"
@@ -250,7 +264,7 @@ export default function Experience() {
 
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <motion.div className="mb-20" style={{ y: yHeading }}>
+        <motion.div className="mb-10 md:mb-12" style={{ y: yHeading }}>
           <motion.div
             className="flex items-center gap-3 mb-3"
             initial={{ opacity: 0, x: -30 }}
@@ -258,7 +272,7 @@ export default function Experience() {
             transition={{ duration: 0.7 }}
           >
             <span className="font-mono text-xs text-[#00ff88] tracking-widest">04.</span>
-            <span className="font-mono text-xs text-gray-500 tracking-widest">EXPERIENCE</span>
+            <span className="font-mono text-xs text-gray-500 tracking-widest">{t("EXPERIENCE")}</span>
           </motion.div>
           <motion.h2
             className="font-display text-5xl md:text-6xl font-bold text-white"
@@ -266,7 +280,7 @@ export default function Experience() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.1 }}
           >
-            Career <span className="gradient-text">Journey</span>
+            {t("Career")} <span className="gradient-text">{t("Journey")}</span>
           </motion.h2>
           <motion.div
             className="h-0.5 bg-gradient-to-r from-[#00ff88] to-transparent mt-4"
@@ -286,7 +300,7 @@ export default function Experience() {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <Briefcase size={12} className="text-[#00ff88]" />
-              WORK & EDUCATION
+              {t("WORK & EDUCATION")}
             </motion.h3>
 
             <div>
@@ -305,7 +319,7 @@ export default function Experience() {
               transition={{ duration: 0.6, delay: 0.3 }}
             >
               <Award size={12} className="text-[#00ff88]" />
-              CERTIFICATIONS
+              {t("CERTIFICATIONS")}
             </motion.h3>
 
             <div className="space-y-3 mb-12">
@@ -336,7 +350,7 @@ export default function Experience() {
                       {cert.name}
                     </div>
                     <div className="font-mono text-xs text-gray-500 mt-0.5">
-                      {cert.issuer} · {cert.year}
+                      {t(cert.issuer)} · {t(cert.year)}
                     </div>
                   </div>
                   {/* Hover accent */}
@@ -361,7 +375,7 @@ export default function Experience() {
             >
               <h3 className="font-mono text-xs text-gray-500 tracking-widest mb-6 flex items-center gap-2">
                 <GraduationCap size={12} className="text-[#00ff88]" />
-                LANGUAGES
+                {t("LANGUAGES")}
               </h3>
               <div className="space-y-4">
                 {[
@@ -370,7 +384,7 @@ export default function Experience() {
                 ].map((l, i) => (
                   <div key={l.lang}>
                     <div className="flex justify-between font-mono text-xs text-gray-400 mb-2">
-                      <span>{l.lang}</span>
+                      <span>{t(l.lang)}</span>
                       <motion.span
                         style={{ color: l.color }}
                         initial={{ opacity: 0 }}
@@ -378,7 +392,7 @@ export default function Experience() {
                         viewport={{ once: true }}
                         transition={{ delay: 0.6 + i * 0.1 }}
                       >
-                        {l.level}
+                        {t(l.level)}
                       </motion.span>
                     </div>
                     <div className="h-0.5 bg-[#1a2744]">
